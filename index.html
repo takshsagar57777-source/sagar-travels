@@ -494,6 +494,53 @@ function sendHireEnquiry(){
 }
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://lyyrajvxhumbqplqelei.supabase.co";
+const SUPABASE_KEY = "sb_publishable_38vwqEeCbiQ9D8fLH2n4gA_T7Qy7L_b";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function sendHireEnquiry(){
+
+  const name = document.getElementById("hireName").value.trim();
+  const phone = document.getElementById("hirePhone").value.trim();
+  const pickup = document.getElementById("hirePickup").value.trim();
+  const destination = document.getElementById("hireDestination").value.trim();
+  const hireDate = document.getElementById("hireDate").value;
+  const busType = document.getElementById("busType").value;
+  const purpose = document.getElementById("purpose").value.trim();
+
+  if(!name || !phone || !pickup || !destination){
+    alert("Please fill all required details.");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("hire_enquiries")
+    .insert([{
+      name: name,
+      phone: phone,
+      pickup: pickup,
+      destination: destination,
+      hire_date: hireDate || null,
+      bus_type: busType || null,
+      purpose: purpose || null
+    }]);
+
+  if(error){
+    console.error(error);
+    alert("Enquiry save nahi hui. Please try again.");
+    return;
+  }
+
+  alert("Thank you " + name + "! Your bus hire enquiry has been submitted successfully.");
+
+}
+</script>
 </body>
 </html>
