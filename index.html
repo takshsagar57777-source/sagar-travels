@@ -1,1 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Sagar Travels | Bus Booking, Bus Hire & Tours</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f7fb;
+  color:#222;
+}
+
+header{
+  background:#0b1f3a;
+  color:white;
+  padding:16px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.logo{
+  font-size:25px;
+  font-weight:bold;
+}
+
+.logo span{
+  color:#ffb300;
+}
+
+nav{
+  display:flex;
+  gap:22px;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+nav a:hover{
+  color:#ffb300;
+}
+
+.hero{
+  background:linear-gradient(135deg,#0b1f3a,#1769aa);
+  color:white;
+  padding:70px 6%;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.hero p{
+  font-size:18px;
+  margin-bottom:30px;
+}
+
+.booking-box{
+  max-width:1000px;
+  margin:auto;
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:15px;
+}
+
+button{
+  background:#ffb300;
+  color:#111;
+  border:none;
+  padding:14px 20px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:15px;
+}
+
+button:hover{
+  background:#ffca28;
+}
+
+section{
+  padding:55px 6%;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.section-title h2{
+  font-size:32px;
+  color:#0b1f3a;
+}
+
+.services{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.card h3{
+  color:#0b1f3a;
+  margin:15px 0 10px;
+}
+
+.card p{
+  color:#666;
+  line-height:1.6;
+}
+
+.icon{
+  font-size:45px;
+}
+
+.hire{
+  background:#eaf3ff;
+}
+
+.hire-box{
+  max-width:850px;
+  margin:auto;
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-bottom:18px;
+}
+
+.full{
+  grid-column:1 / -1;
+}
+
+.tours{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+}
+
+.tour-card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.tour-content{
+  padding:22px;
+}
+
+.tour-content h3{
+  color:#0b1f3a;
+  margin-bottom:8px;
+}
+
+.tour-content p{
+  color:#666;
+  line-height:1.5;
+}
+
+.contact{
+  text-align:center;
+  background:#0b1f3a;
+  color:white;
+}
+
+.contact h2{
+  margin-bottom:15px;
+}
+
+.contact p{
+  margin:8px 0;
+}
+
+footer{
+  background:#071426;
+  color:#bbb;
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+}
+
+@media(max-width:800px){
+
+  header{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  nav{
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  .hero h1{
+    font-size:32px;
+  }
+
+  .booking-box{
+    grid-template-columns:1fr;
+  }
+
+  .services,
+  .tours{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Sagar <span>Travels</span></div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#booking">Bus Booking</a>
+    <a href="#hire">Bus Hire</a>
+    <a href="#tours">Tours</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+
+  <h1>Travel With Sagar Travels</h1>
+
+  <p>
+    Comfortable Bus Booking, Bus Hire & Tour Services
+  </p>
+
+  <div class="booking-box" id="booking">
+
+    <input type="text" id="from" placeholder="From">
+
+    <input type="text" id="to" placeholder="To">
+
+    <input type="date" id="travelDate">
+
+    <button onclick="searchBus()">Search Buses</button>
+
+  </div>
+
+</section>
+
+
+<section>
+
+  <div class="section-title">
+    <h2>Our Services</h2>
+  </div>
+
+  <div class="services">
+
+    <div class="card">
+      <div class="icon">🚌</div>
+      <h3>Bus Booking</h3>
+      <p>
+        Book your bus journey easily and travel comfortably
+        with Sagar Travels.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🚍</div>
+      <h3>Bus Hire</h3>
+      <p>
+        Hire buses for weddings, functions, corporate trips,
+        schools and groups.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🏔️</div>
+      <h3>Tour Packages</h3>
+      <p>
+        Plan family trips, religious tours and holiday
+        packages across India.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="hire" id="hire">
+
+  <div class="section-title">
+    <h2>Hire a Bus</h2>
+  </div>
+
+  <div class="hire-box">
+
+    <div class="form-grid">
+
+      <input type="text" id="hireName" placeholder="Your Name">
+
+      <input type="tel" id="hirePhone" placeholder="Mobile Number">
+
+      <input type="text" id="hirePickup" placeholder="Pickup Location">
+
+      <input type="text" id="hireDestination" placeholder="Destination">
+
+      <input type="date" id="hireDate">
+
+      <select id="busType">
+        <option value="">Select Bus Type</option>
+        <option>AC Bus</option>
+        <option>Non-AC Bus</option>
+        <option>Volvo / Luxury Bus</option>
+        <option>Mini Bus</option>
+        <option>Any Available Bus</option>
+      </select>
+
+      <input
+        class="full"
+        type="text"
+        id="purpose"
+        placeholder="Purpose - Wedding / School / Corporate / Tour etc."
+      >
+
+    </div>
+
+    <button onclick="sendHireEnquiry()">
+      Send Hire Enquiry
+    </button>
+
+  </div>
+
+</section>
+
+
+<section id="tours">
+
+  <div class="section-title">
+    <h2>Popular Tour Categories</h2>
+  </div>
+
+  <div class="tours">
+
+    <div class="tour-card">
+      <div class="tour-content">
+        <h3>🏔️ Hill Station Tours</h3>
+        <p>
+          Enjoy comfortable trips to beautiful hill stations
+          with family and friends.
+        </p>
+      </div>
+    </div>
+
+    <div class="tour-card">
+      <div class="tour-content">
+        <h3>🙏 Religious Tours</h3>
+        <p>
+          Plan comfortable religious journeys to famous
+          temples and pilgrimage destinations.
+        </p>
+      </div>
+    </div>
+
+    <div class="tour-card">
+      <div class="tour-content">
+        <h3>🌴 Holiday Tours</h3>
+        <p>
+          Explore India with customised holiday and group
+          tour packages.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="contact" id="contact">
+
+  <h2>Contact Sagar Travels</h2>
+
+  <p>📞 Call us for Bus Booking & Bus Hire</p>
+
+  <p>📍 Ghaziabad, Uttar Pradesh</p>
+
+  <p>🚌 Serving Routes Across India</p>
+
+</section>
+
+
+<footer>
+
+  © 2026 Sagar Travels. All Rights Reserved.
+
+</footer>
+
+
+<script>
+
+function searchBus(){
+
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+  const date = document.getElementById("travelDate").value;
+
+  if(!from || !to || !date){
+
+    alert("Please enter From, To and Travel Date.");
+
+    return;
+  }
+
+  alert(
+    "Bus search received!\\n\\nFrom: " +
+    from +
+    "\\nTo: " +
+    to +
+    "\\nDate: " +
+    date
+  );
+}
+
+
+function sendHireEnquiry(){
+
+  const name = document.getElementById("hireName").value;
+  const phone = document.getElementById("hirePhone").value;
+  const pickup = document.getElementById("hirePickup").value;
+  const destination = document.getElementById("hireDestination").value;
+
+  if(!name || !phone || !pickup || !destination){
+
+    alert("Please fill all required details.");
+
+    return;
+  }
+
+  alert(
+    "Thank you " +
+    name +
+    "!\\n\\nYour bus hire enquiry has been received.\\nOur team will contact you soon."
+  );
+}
+
+</script>
+
+</body>
+</html>
