@@ -412,50 +412,76 @@ function showDashboard(){
 
 /* LOAD ENQUIRIES */
 
-async function loadEnquiries(){
+  async function loadEnquiries(){
 
-  const box =
-    document.getElementById("enquiries");
+  const box = document.getElementById("enquiries");
 
+  box.innerHTML = "Checking admin session...";
 
-  box.innerHTML =
-    "Loading enquiries...";
+  try {
 
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
 
-  const { data, error } =
-    await supabaseClient
+    if(sessionError){
+      box.innerHTML =
+        "<p style='color:red;'>Session error: " +
+        sessionError.message +
+        "</p>";
+      return;
+    }
+
+    if(!sessionData.session){
+      box.innerHTML =
+        "<p style='color:red;'>Admin session nahi mili. Please logout karke dobara login karo.</p>";
+      return;
+    }
+
+    box.innerHTML = "Loading enquiries...";
+
+    const queryPromise = supabaseClient
       .from("hire_enquiries")
       .select("*")
       .order("created_at", {
-        ascending:false
+        ascending: false
       });
 
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error("Database request 10 seconds se zyada le rahi hai."));
+      }, 10000);
+    });
 
-  if(error){
+    const result = await Promise.race([
+      queryPromise,
+      timeoutPromise
+    ]);
+
+    const { data, error } = result;
+
+    if(error){
+      box.innerHTML =
+        "<p style='color:red;'>Database error: " +
+        error.message +
+        "</p>";
+      return;
+    }
+
+    allEnquiries = data || [];
+
+    updateSummary();
+
+    displayEnquiries(allEnquiries);
+
+  } catch(error){
 
     console.error(error);
 
     box.innerHTML =
-      "<div class='message'>" +
-      "Enquiries load nahi ho rahi.<br><br>" +
+      "<p style='color:red;'>Error: " +
       error.message +
-      "</div>";
-
-    return;
+      "</p>";
   }
-
-
-  allEnquiries =
-    data || [];
-
-
-  updateSummary();
-
-
-  displayEnquiries(
-    allEnquiries
-  );
-
 }
 
 
