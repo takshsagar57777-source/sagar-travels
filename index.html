@@ -560,26 +560,25 @@ async function searchBus(){
     return;
   }
 
-  const { data, error } = await supabaseClient
-    .from("bus_bookings")
-    .insert([
-      {
-        from_location: from,
-        to_location: to,
-        travel_date: date,
-        bus_type: busType,
-        seating_capacity: seating,
-        passengers: Number(passengers),
-        journey_type: journeyType,
-        boarding_point: boarding,
-        dropping_point: dropping,
-        passenger_name: passengerName,
-        mobile_number: passengerMobile,
-        whatsapp_number: whatsapp,
-        special_requirement: message
-      }
-    ])
-    .select();
+  const { error } = await supabaseClient
+  .from("bus_bookings")
+  .insert([
+    {
+      from_location: from,
+      to_location: to,
+      travel_date: date,
+      bus_type: busType,
+      seating_capacity: seating,
+      passengers: Number(passengers),
+      journey_type: journeyType,
+      boarding_point: boarding,
+      dropping_point: dropping,
+      passenger_name: passengerName,
+      mobile_number: passengerMobile,
+      whatsapp_number: whatsapp,
+      special_requirement: message
+    }
+  ]);
 
   if(error){
     console.error(error);
