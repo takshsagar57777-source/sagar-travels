@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Sagar Travels - Admin</title>
-  
+
 <style>
 
 *{
@@ -29,12 +30,13 @@ body{
   box-shadow:0 5px 25px rgba(0,0,0,.12);
 }
 
-h1{
-  margin-top:0;
+.login-box h1{
   text-align:center;
+  margin-top:0;
 }
 
-input, select{
+input,
+select{
   width:100%;
   padding:13px;
   margin:8px 0;
@@ -75,14 +77,44 @@ button{
 }
 
 .header h1{
-  text-align:left;
   margin:0;
 }
 
 .container{
   max-width:1200px;
   margin:auto;
-  padding:25px 15px;
+  padding:20px 15px;
+}
+
+.logout{
+  float:right;
+  background:#dc2626;
+  padding:8px 15px;
+}
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.summary-card{
+  background:white;
+  padding:20px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.summary-card h2{
+  margin:0 0 8px;
+  font-size:30px;
+}
+
+.summary-card p{
+  margin:0;
+  color:#666;
 }
 
 .search-box{
@@ -103,29 +135,6 @@ button{
 
 .card h3{
   margin-top:0;
-}
-
-.status{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:13px;
-}
-
-.status-new{
-  background:#e5e7eb;
-}
-
-.status-contacted{
-  background:#fef3c7;
-}
-
-.status-confirmed{
-  background:#dcfce7;
-}
-
-.status-cancelled{
-  background:#fee2e2;
 }
 
 .actions{
@@ -157,23 +166,39 @@ button{
   background:#2563eb;
 }
 
-.logout{
-  width:auto;
-  float:right;
-  padding:8px 15px;
-  margin:0;
-  background:#dc2626;
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:13px;
 }
 
-.no-results{
+.status-new{
+  background:#e5e7eb;
+}
+
+.status-contacted{
+  background:#fef3c7;
+}
+
+.status-confirmed{
+  background:#dcfce7;
+}
+
+.status-cancelled{
+  background:#fee2e2;
+}
+
+.message{
   text-align:center;
-  color:#666;
   padding:30px;
+  color:#666;
 }
 
 </style>
 
 </head>
+
 
 <body>
 
@@ -225,49 +250,44 @@ button{
 
     <h1>Sagar Travels Admin Dashboard</h1>
 
-    <p>
-      Bus Hire Enquiries
-    </p>
+    <p>Bus Hire Enquiries</p>
 
   </div>
 
 
   <div class="container">
-    <!-- DASHBOARD SUMMARY -->
 
-<div id="summaryCards" style="
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:15px;
-  margin-bottom:20px;
-">
 
-  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
-    <h2 id="totalCount">0</h2>
-    <p>Total Enquiries</p>
-  </div>
+    <!-- SUMMARY -->
 
-  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
-    <h2 id="newCount">0</h2>
-    <p>New</p>
-  </div>
+    <div class="summary">
 
-  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
-    <h2 id="contactedCount">0</h2>
-    <p>Contacted</p>
-  </div>
+      <div class="summary-card">
+        <h2 id="totalCount">0</h2>
+        <p>Total Enquiries</p>
+      </div>
 
-  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
-    <h2 id="confirmedCount">0</h2>
-    <p>Confirmed</p>
-  </div>
+      <div class="summary-card">
+        <h2 id="newCount">0</h2>
+        <p>New</p>
+      </div>
 
-  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
-    <h2 id="cancelledCount">0</h2>
-    <p>Cancelled</p>
-  </div>
+      <div class="summary-card">
+        <h2 id="contactedCount">0</h2>
+        <p>Contacted</p>
+      </div>
 
-</div>
+      <div class="summary-card">
+        <h2 id="confirmedCount">0</h2>
+        <p>Confirmed</p>
+      </div>
+
+      <div class="summary-card">
+        <h2 id="cancelledCount">0</h2>
+        <p>Cancelled</p>
+      </div>
+
+    </div>
 
 
     <!-- SEARCH -->
@@ -277,7 +297,7 @@ button{
       <input
         type="text"
         id="searchInput"
-        placeholder="Search by name or phone..."
+        placeholder="Search by customer name or phone..."
         oninput="filterEnquiries()"
       >
 
@@ -300,15 +320,18 @@ button{
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
+
+/* SUPABASE CONNECTION */
 
 const SUPABASE_URL =
 "https://lyyrajvxhumbqplqelei.supabase.co";
 
 
 const SUPABASE_KEY =
-"sb_publishable_38vwqEeCbiQ9D8fLH2n4gA_T7Qy7L_b";
+"YAHAN_APNI_PUBLISHABLE_KEY_PASTE_KARNA";
 
 
 const supabaseClient =
@@ -321,15 +344,19 @@ window.supabase.createClient(
 let allEnquiries = [];
 
 
-// LOGIN
+
+/* LOGIN */
 
 async function adminLogin(){
 
   const email =
-    document.getElementById("adminEmail").value.trim();
+    document.getElementById("adminEmail")
+      .value
+      .trim();
 
   const password =
-    document.getElementById("adminPassword").value;
+    document.getElementById("adminPassword")
+      .value;
 
 
   if(!email || !password){
@@ -341,7 +368,7 @@ async function adminLogin(){
   }
 
 
-  const { data, error } =
+  const { error } =
     await supabaseClient.auth.signInWithPassword({
 
       email:email,
@@ -361,95 +388,143 @@ async function adminLogin(){
   }
 
 
+  showDashboard();
+
+}
+
+
+
+/* SHOW DASHBOARD */
+
+function showDashboard(){
+
   document.getElementById("loginPage").style.display =
     "none";
 
   document.getElementById("dashboard").style.display =
     "block";
 
-
   loadEnquiries();
-  function updateSummary(){
-
-  const total =
-    allEnquiries.length;
-
-  const newCount =
-    allEnquiries.filter(item =>
-      !item.status || item.status === "new"
-    ).length;
-
-  const contacted =
-    allEnquiries.filter(item =>
-      item.status === "contacted"
-    ).length;
-
-  const confirmed =
-    allEnquiries.filter(item =>
-      item.status === "confirmed"
-    ).length;
-
-  const cancelled =
-    allEnquiries.filter(item =>
-      item.status === "cancelled"
-    ).length;
-
-
-  document.getElementById("totalCount").innerText =
-    total;
-
-  document.getElementById("newCount").innerText =
-    newCount;
-
-  document.getElementById("contactedCount").innerText =
-    contacted;
-
-  document.getElementById("confirmedCount").innerText =
-    confirmed;
-
-  document.getElementById("cancelledCount").innerText =
-    cancelled;
-}
 
 }
 
 
-// LOAD ENQUIRIES
+
+/* LOAD ENQUIRIES */
+
 async function loadEnquiries(){
 
-  const box = document.getElementById("enquiries");
+  const box =
+    document.getElementById("enquiries");
 
-  box.innerHTML = "Loading enquiries...";
 
-  const { data, error } = await supabaseClient
-    .from("hire_enquiries")
-    .select("*")
-    .order("created_at", {
-      ascending: false
-    });
+  box.innerHTML =
+    "Loading enquiries...";
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("hire_enquiries")
+      .select("*")
+      .order("created_at", {
+        ascending:false
+      });
+
 
   if(error){
 
     console.error(error);
 
     box.innerHTML =
-      "<p style='color:red;'>Enquiries load nahi ho rahi: " +
+      "<div class='message'>" +
+      "Enquiries load nahi ho rahi.<br><br>" +
       error.message +
-      "</p>";
+      "</div>";
 
     return;
   }
 
-  allEnquiries = data || [];
+
+  allEnquiries =
+    data || [];
+
 
   updateSummary();
 
-  displayEnquiries(allEnquiries);
+
+  displayEnquiries(
+    allEnquiries
+  );
+
 }
 
 
 
-// DISPLAY
+/* SUMMARY */
+
+function updateSummary(){
+
+  const total =
+    allEnquiries.length;
+
+
+  const newCount =
+    allEnquiries.filter(function(item){
+
+      return !item.status ||
+             item.status === "new";
+
+    }).length;
+
+
+  const contacted =
+    allEnquiries.filter(function(item){
+
+      return item.status === "contacted";
+
+    }).length;
+
+
+  const confirmed =
+    allEnquiries.filter(function(item){
+
+      return item.status === "confirmed";
+
+    }).length;
+
+
+  const cancelled =
+    allEnquiries.filter(function(item){
+
+      return item.status === "cancelled";
+
+    }).length;
+
+
+  document.getElementById("totalCount")
+    .innerText = total;
+
+
+  document.getElementById("newCount")
+    .innerText = newCount;
+
+
+  document.getElementById("contactedCount")
+    .innerText = contacted;
+
+
+  document.getElementById("confirmedCount")
+    .innerText = confirmed;
+
+
+  document.getElementById("cancelledCount")
+    .innerText = cancelled;
+
+}
+
+
+
+/* DISPLAY ENQUIRIES */
 
 function displayEnquiries(data){
 
@@ -460,30 +535,41 @@ function displayEnquiries(data){
   if(!data || data.length === 0){
 
     box.innerHTML =
-      "<div class='no-results'>No enquiries found.</div>";
+      "<div class='message'>" +
+      "No enquiries found." +
+      "</div>";
 
     return;
   }
 
 
   box.innerHTML =
-    data.map(item => {
+    data.map(function(item){
+
+
+      let status =
+        item.status || "new";
 
 
       let statusClass =
         "status-new";
 
 
-      if(item.status === "contacted"){
-        statusClass = "status-contacted";
+      if(status === "contacted"){
+        statusClass =
+          "status-contacted";
       }
 
-      if(item.status === "confirmed"){
-        statusClass = "status-confirmed";
+
+      if(status === "confirmed"){
+        statusClass =
+          "status-confirmed";
       }
 
-      if(item.status === "cancelled"){
-        statusClass = "status-cancelled";
+
+      if(status === "cancelled"){
+        statusClass =
+          "status-cancelled";
       }
 
 
@@ -500,106 +586,110 @@ function displayEnquiries(data){
 
       return `
 
-      <div class="card">
+        <div class="card">
 
-        <h3>
-          ${escapeHtml(item.name || "Customer")}
-        </h3>
-
-
-        <p>
-          <b>Phone:</b>
-          ${escapeHtml(item.phone || "")}
-        </p>
+          <h3>
+            ${escapeHtml(item.name || "Customer")}
+          </h3>
 
 
-        <p>
-          <b>Route:</b>
-          ${escapeHtml(item.pickup || "")}
-          →
-          ${escapeHtml(item.destination || "")}
-        </p>
+          <p>
+            <b>Phone:</b>
+            ${escapeHtml(item.phone || "")}
+          </p>
 
 
-        <p>
-          <b>Travel Date:</b>
-          ${escapeHtml(item.hire_date || "Not provided")}
-        </p>
+          <p>
+            <b>Route:</b>
+            ${escapeHtml(item.pickup || "")}
+            →
+            ${escapeHtml(item.destination || "")}
+          </p>
 
 
-        <p>
-          <b>Bus Type:</b>
-          ${escapeHtml(item.bus_type || "Not provided")}
-        </p>
+          <p>
+            <b>Travel Date:</b>
+            ${escapeHtml(item.hire_date || "Not provided")}
+          </p>
 
 
-        <p>
-          <b>Purpose:</b>
-          ${escapeHtml(item.purpose || "Not provided")}
-        </p>
+          <p>
+            <b>Bus Type:</b>
+            ${escapeHtml(item.bus_type || "Not provided")}
+          </p>
 
 
-        <p>
-          <b>Status:</b>
-
-          <span class="status ${statusClass}">
-            ${escapeHtml(item.status || "new")}
-          </span>
-
-        </p>
+          <p>
+            <b>Purpose:</b>
+            ${escapeHtml(item.purpose || "Not provided")}
+          </p>
 
 
-        <select id="status-${item.id}">
+          <p>
 
-          <option value="new"
-            ${item.status === "new" || !item.status ? "selected" : ""}>
-            New
-          </option>
+            <b>Current Status:</b>
 
-          <option value="contacted"
-            ${item.status === "contacted" ? "selected" : ""}>
-            Contacted
-          </option>
+            <span class="status ${statusClass}">
+              ${escapeHtml(status)}
+            </span>
 
-          <option value="confirmed"
-            ${item.status === "confirmed" ? "selected" : ""}>
-            Confirmed
-          </option>
-
-          <option value="cancelled"
-            ${item.status === "cancelled" ? "selected" : ""}>
-            Cancelled
-          </option>
-
-        </select>
+          </p>
 
 
-        <div class="actions">
+          <select id="status-${item.id}">
 
-          <a
-            class="call"
-            href="tel:${escapeHtml(item.phone || "")}">
-            📞 Call
-          </a>
+            <option value="new"
+              ${status === "new" ? "selected" : ""}>
+              New
+            </option>
+
+            <option value="contacted"
+              ${status === "contacted" ? "selected" : ""}>
+              Contacted
+            </option>
+
+            <option value="confirmed"
+              ${status === "confirmed" ? "selected" : ""}>
+              Confirmed
+            </option>
+
+            <option value="cancelled"
+              ${status === "cancelled" ? "selected" : ""}>
+              Cancelled
+            </option>
+
+          </select>
 
 
-          <a
-            class="whatsapp"
-            href="https://wa.me/${whatsappNumber}"
-            target="_blank">
-            💬 WhatsApp
-          </a>
+          <div class="actions">
 
 
-          <button
-            class="save"
-            onclick="updateStatus(${item.id})">
-            🔄 Save Status
-          </button>
+            <a
+              class="call"
+              href="tel:${escapeHtml(item.phone || "")}">
+              📞 Call Customer
+            </a>
+
+
+            <a
+              class="whatsapp"
+              href="https://wa.me/${whatsappNumber}"
+              target="_blank">
+              💬 WhatsApp
+            </a>
+
+
+            <button
+              class="save"
+              onclick="updateStatus(${item.id})">
+              🔄 Save Status
+            </button>
+
+
+          </div>
+
 
         </div>
-
-      </div>
 
       `;
 
@@ -608,7 +698,8 @@ function displayEnquiries(data){
 }
 
 
-// SEARCH
+
+/* SEARCH */
 
 function filterEnquiries(){
 
@@ -621,34 +712,42 @@ function filterEnquiries(){
 
   if(!search){
 
-    displayEnquiries(allEnquiries);
+    displayEnquiries(
+      allEnquiries
+    );
 
     return;
   }
 
 
   const filtered =
-    allEnquiries.filter(item =>
+    allEnquiries.filter(function(item){
 
-      String(item.name || "")
-        .toLowerCase()
-        .includes(search)
-
-      ||
-
-      String(item.phone || "")
-        .toLowerCase()
-        .includes(search)
-
-    );
+      const name =
+        String(item.name || "")
+          .toLowerCase();
 
 
-  displayEnquiries(filtered);
+      const phone =
+        String(item.phone || "")
+          .toLowerCase();
+
+
+      return name.includes(search) ||
+             phone.includes(search);
+
+    });
+
+
+  displayEnquiries(
+    filtered
+  );
 
 }
 
 
-// UPDATE STATUS
+
+/* UPDATE STATUS */
 
 async function updateStatus(id){
 
@@ -676,7 +775,8 @@ async function updateStatus(id){
     console.error(error);
 
     alert(
-      "Status update nahi hua."
+      "Status update nahi hua: " +
+      error.message
     );
 
     return;
@@ -693,21 +793,28 @@ async function updateStatus(id){
 }
 
 
-// HTML SECURITY
+
+/* ESCAPE HTML */
 
 function escapeHtml(value){
 
   return String(value)
+
     .replace(/&/g,"&amp;")
+
     .replace(/</g,"&lt;")
+
     .replace(/>/g,"&gt;")
+
     .replace(/"/g,"&quot;")
+
     .replace(/'/g,"&#039;");
 
 }
 
 
-// LOGOUT
+
+/* LOGOUT */
 
 async function logout(){
 
@@ -725,6 +832,7 @@ async function logout(){
   document.getElementById("adminEmail").value =
     "";
 
+
   document.getElementById("adminPassword").value =
     "";
 
@@ -733,4 +841,5 @@ async function logout(){
 </script>
 
 </body>
+
 </html>
