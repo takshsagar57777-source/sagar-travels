@@ -415,42 +415,38 @@ async function adminLogin(){
 
 
 // LOAD ENQUIRIES
-
 async function loadEnquiries(){
 
-  const box =
-    document.getElementById("enquiries");
+  const box = document.getElementById("enquiries");
 
-  box.innerHTML =
-    "Loading enquiries...";
+  box.innerHTML = "Loading enquiries...";
 
-
-  const { data, error } =
-    await supabaseClient
-      .from("hire_enquiries")
-      .select("*")
-      .order("created_at", {
-        ascending:false
-      });
-
+  const { data, error } = await supabaseClient
+    .from("hire_enquiries")
+    .select("*")
+    .order("created_at", {
+      ascending: false
+    });
 
   if(error){
 
     console.error(error);
 
     box.innerHTML =
-      "<p style='color:red;'>Enquiries load nahi ho rahi.</p>";
+      "<p style='color:red;'>Enquiries load nahi ho rahi: " +
+      error.message +
+      "</p>";
 
     return;
   }
 
-
   allEnquiries = data || [];
+
   updateSummary();
 
   displayEnquiries(allEnquiries);
-
 }
+
 
 
 // DISPLAY
