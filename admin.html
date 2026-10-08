@@ -34,7 +34,7 @@ h1{
   text-align:center;
 }
 
-input{
+input, select{
   width:100%;
   padding:13px;
   margin:8px 0;
@@ -44,15 +44,18 @@ input{
 }
 
 button{
-  width:100%;
-  padding:13px;
-  margin-top:10px;
+  padding:12px 16px;
   border:0;
   border-radius:8px;
   background:#111827;
   color:white;
-  font-size:16px;
+  font-size:15px;
   cursor:pointer;
+}
+
+.login-button{
+  width:100%;
+  margin-top:10px;
 }
 
 .error{
@@ -82,6 +85,14 @@ button{
   padding:25px 15px;
 }
 
+.search-box{
+  background:white;
+  padding:18px;
+  border-radius:14px;
+  margin-bottom:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
 .card{
   background:white;
   padding:20px;
@@ -97,19 +108,53 @@ button{
 .status{
   display:inline-block;
   padding:6px 10px;
-  background:#e5e7eb;
   border-radius:20px;
   font-size:13px;
 }
 
+.status-new{
+  background:#e5e7eb;
+}
+
+.status-contacted{
+  background:#fef3c7;
+}
+
+.status-confirmed{
+  background:#dcfce7;
+}
+
+.status-cancelled{
+  background:#fee2e2;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
+
 .call{
   display:inline-block;
-  margin-top:10px;
-  padding:9px 14px;
+  padding:10px 14px;
   background:#16a34a;
   color:white;
   text-decoration:none;
   border-radius:7px;
+}
+
+.whatsapp{
+  display:inline-block;
+  padding:10px 14px;
+  background:#25D366;
+  color:white;
+  text-decoration:none;
+  border-radius:7px;
+}
+
+.save{
+  background:#2563eb;
 }
 
 .logout{
@@ -118,6 +163,12 @@ button{
   padding:8px 15px;
   margin:0;
   background:#dc2626;
+}
+
+.no-results{
+  text-align:center;
+  color:#666;
+  padding:30px;
 }
 
 </style>
@@ -149,7 +200,9 @@ button{
     placeholder="Password"
   >
 
-  <button onclick="adminLogin()">
+  <button
+    class="login-button"
+    onclick="adminLogin()">
     Login
   </button>
 
@@ -164,7 +217,9 @@ button{
 
   <div class="header">
 
-    <button class="logout" onclick="logout()">
+    <button
+      class="logout"
+      onclick="logout()">
       Logout
     </button>
 
@@ -176,11 +231,30 @@ button{
 
   </div>
 
+
   <div class="container">
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by name or phone..."
+        oninput="filterEnquiries()"
+      >
+
+    </div>
+
+
+    <!-- ENQUIRIES -->
 
     <div id="enquiries">
       Loading enquiries...
     </div>
+
 
   </div>
 
@@ -192,6 +266,7 @@ button{
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
 
 const SUPABASE_URL =
 "https://lyyrajvxhumbqplqelei.supabase.co";
@@ -208,7 +283,10 @@ window.supabase.createClient(
 );
 
 
-// ADMIN LOGIN
+let allEnquiries = [];
+
+
+// LOGIN
 
 async function adminLogin(){
 
@@ -230,8 +308,10 @@ async function adminLogin(){
 
   const { data, error } =
     await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
+
+      email:email,
+      password:password
+
     });
 
 
@@ -289,70 +369,267 @@ async function loadEnquiries(){
   }
 
 
+  allEnquiries = data || [];
+
+  displayEnquiries(allEnquiries);
+
+}
+
+
+// DISPLAY
+
+function displayEnquiries(data){
+
+  const box =
+    document.getElementById("enquiries");
+
+
   if(!data || data.length === 0){
 
     box.innerHTML =
-      "<p>No enquiries found.</p>";
+      "<div class='no-results'>No enquiries found.</div>";
 
     return;
   }
 
 
   box.innerHTML =
-    data.map(item => `
+    data.map(item => {
+
+
+      let statusClass =
+        "status-new";
+
+
+      if(item.status === "contacted"){
+        statusClass = "status-contacted";
+      }
+
+      if(item.status === "confirmed"){
+        statusClass = "status-confirmed";
+      }
+
+      if(item.status === "cancelled"){
+        statusClass = "status-cancelled";
+      }
+
+
+      const phone =
+        String(item.phone || "")
+          .replace(/\D/g,"");
+
+
+      const whatsappNumber =
+        phone.length === 10
+          ? "91" + phone
+          : phone;
+
+
+      return `
 
       <div class="card">
 
         <h3>
-          ${item.name}
+          ${escapeHtml(item.name || "Customer")}
         </h3>
+
 
         <p>
           <b>Phone:</b>
-          ${item.phone}
+          ${escapeHtml(item.phone || "")}
         </p>
+
 
         <p>
           <b>Route:</b>
-          ${item.pickup}
+          ${escapeHtml(item.pickup || "")}
           →
-          ${item.destination}
+          ${escapeHtml(item.destination || "")}
         </p>
+
 
         <p>
           <b>Travel Date:</b>
-          ${item.hire_date || "Not provided"}
+          ${escapeHtml(item.hire_date || "Not provided")}
         </p>
+
 
         <p>
           <b>Bus Type:</b>
-          ${item.bus_type || "Not provided"}
+          ${escapeHtml(item.bus_type || "Not provided")}
         </p>
+
 
         <p>
           <b>Purpose:</b>
-          ${item.purpose || "Not provided"}
+          ${escapeHtml(item.purpose || "Not provided")}
         </p>
+
 
         <p>
           <b>Status:</b>
 
-          <span class="status">
-            ${item.status || "new"}
+          <span class="status ${statusClass}">
+            ${escapeHtml(item.status || "new")}
           </span>
 
         </p>
 
-        <a
-          class="call"
-          href="tel:${item.phone}"
-        >
-          Call Customer
-        </a>
+
+        <select id="status-${item.id}">
+
+          <option value="new"
+            ${item.status === "new" || !item.status ? "selected" : ""}>
+            New
+          </option>
+
+          <option value="contacted"
+            ${item.status === "contacted" ? "selected" : ""}>
+            Contacted
+          </option>
+
+          <option value="confirmed"
+            ${item.status === "confirmed" ? "selected" : ""}>
+            Confirmed
+          </option>
+
+          <option value="cancelled"
+            ${item.status === "cancelled" ? "selected" : ""}>
+            Cancelled
+          </option>
+
+        </select>
+
+
+        <div class="actions">
+
+          <a
+            class="call"
+            href="tel:${escapeHtml(item.phone || "")}">
+            📞 Call
+          </a>
+
+
+          <a
+            class="whatsapp"
+            href="https://wa.me/${whatsappNumber}"
+            target="_blank">
+            💬 WhatsApp
+          </a>
+
+
+          <button
+            class="save"
+            onclick="updateStatus(${item.id})">
+            🔄 Save Status
+          </button>
+
+        </div>
 
       </div>
 
-    `).join("");
+      `;
+
+    }).join("");
+
+}
+
+
+// SEARCH
+
+function filterEnquiries(){
+
+  const search =
+    document.getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  if(!search){
+
+    displayEnquiries(allEnquiries);
+
+    return;
+  }
+
+
+  const filtered =
+    allEnquiries.filter(item =>
+
+      String(item.name || "")
+        .toLowerCase()
+        .includes(search)
+
+      ||
+
+      String(item.phone || "")
+        .toLowerCase()
+        .includes(search)
+
+    );
+
+
+  displayEnquiries(filtered);
+
+}
+
+
+// UPDATE STATUS
+
+async function updateStatus(id){
+
+  const select =
+    document.getElementById(
+      "status-" + id
+    );
+
+
+  const newStatus =
+    select.value;
+
+
+  const { error } =
+    await supabaseClient
+      .from("hire_enquiries")
+      .update({
+        status:newStatus
+      })
+      .eq("id",id);
+
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "Status update nahi hua."
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Status successfully update ho gaya."
+  );
+
+
+  loadEnquiries();
+
+}
+
+
+// HTML SECURITY
+
+function escapeHtml(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
@@ -363,15 +640,20 @@ async function logout(){
 
   await supabaseClient.auth.signOut();
 
+
   document.getElementById("dashboard").style.display =
     "none";
+
 
   document.getElementById("loginPage").style.display =
     "block";
 
-  document.getElementById("adminEmail").value = "";
 
-  document.getElementById("adminPassword").value = "";
+  document.getElementById("adminEmail").value =
+    "";
+
+  document.getElementById("adminPassword").value =
+    "";
 
 }
 
