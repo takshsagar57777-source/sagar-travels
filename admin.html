@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,9 +121,11 @@ button{
 }
 
 </style>
+
 </head>
 
 <body>
+
 
 <!-- LOGIN -->
 
@@ -135,9 +138,9 @@ button{
   </p>
 
   <input
-    type="text"
-    id="adminUser"
-    placeholder="Username"
+    type="email"
+    id="adminEmail"
+    placeholder="Admin Email"
   >
 
   <input
@@ -193,8 +196,10 @@ button{
 const SUPABASE_URL =
 "https://lyyrajvxhumbqplqelei.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_38vwqEeCbiQ9D8fLH2n4gA_T7Qy7L_b";
+
 
 const supabaseClient =
 window.supabase.createClient(
@@ -205,41 +210,50 @@ window.supabase.createClient(
 
 // ADMIN LOGIN
 
-function adminLogin(){
+async function adminLogin(){
 
-  const username =
-    document.getElementById("adminUser").value;
+  const email =
+    document.getElementById("adminEmail").value.trim();
 
   const password =
     document.getElementById("adminPassword").value;
 
 
-  /*
-    TEMPORARY LOGIN
-
-    Baad mein hum isko proper
-    Supabase authentication se secure karenge.
-  */
-
-  if(
-    username === "admin" &&
-    password === "Sagar@123"
-  ){
-
-    document.getElementById("loginPage").style.display =
-      "none";
-
-    document.getElementById("dashboard").style.display =
-      "block";
-
-    loadEnquiries();
-
-  }else{
+  if(!email || !password){
 
     document.getElementById("loginError").innerText =
-      "Username ya password galat hai.";
+      "Email aur password enter karo.";
 
+    return;
   }
+
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+
+  if(error){
+
+    console.error(error);
+
+    document.getElementById("loginError").innerText =
+      "Email ya password galat hai.";
+
+    return;
+  }
+
+
+  document.getElementById("loginPage").style.display =
+    "none";
+
+  document.getElementById("dashboard").style.display =
+    "block";
+
+
+  loadEnquiries();
 
 }
 
@@ -345,13 +359,19 @@ async function loadEnquiries(){
 
 // LOGOUT
 
-function logout(){
+async function logout(){
+
+  await supabaseClient.auth.signOut();
 
   document.getElementById("dashboard").style.display =
     "none";
 
   document.getElementById("loginPage").style.display =
     "block";
+
+  document.getElementById("adminEmail").value = "";
+
+  document.getElementById("adminPassword").value = "";
 
 }
 
