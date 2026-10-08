@@ -534,7 +534,7 @@ footer{
 
 <script>
 
-function searchBus(){
+async function searchBus(){
 
   const from = document.getElementById("from").value;
   const to = document.getElementById("to").value;
@@ -551,42 +551,51 @@ function searchBus(){
   const message = document.getElementById("bookingMessage").value;
 
   if(
-    !from ||
-    !to ||
-    !date ||
-    !busType ||
-    !seating ||
-    !passengers ||
-    !journeyType ||
-    !boarding ||
-    !dropping ||
-    !passengerName ||
-    !passengerMobile ||
-    !whatsapp
+    !from || !to || !date || !busType ||
+    !seating || !passengers || !journeyType ||
+    !boarding || !dropping || !passengerName ||
+    !passengerMobile || !whatsapp
   ){
-
     alert("Please fill all required booking details.");
+    return;
+  }
 
+  const { data, error } = await supabaseClient
+    .from("bus_bookings")
+    .insert([
+      {
+        from_location: from,
+        to_location: to,
+        travel_date: date,
+        bus_type: busType,
+        seating_capacity: seating,
+        passengers: Number(passengers),
+        journey_type: journeyType,
+        boarding_point: boarding,
+        dropping_point: dropping,
+        passenger_name: passengerName,
+        mobile_number: passengerMobile,
+        whatsapp_number: whatsapp,
+        special_requirement: message
+      }
+    ])
+    .select();
+
+  if(error){
+    console.error(error);
+    alert("Booking save nahi ho payi.\n\n" + error.message);
     return;
   }
 
   alert(
-    "Booking Search Received!\n\n" +
-    "Passenger: " + passengerName +
-    "\nFrom: " + from +
-    "\nTo: " + to +
-    "\nTravel Date: " + date +
-    "\nBus Type: " + busType +
-    "\nBus Capacity: " + seating +
-    "\nPassengers: " + passengers +
-    "\nJourney: " + journeyType +
-    "\nBoarding: " + boarding +
-    "\nDropping: " + dropping +
-    "\nMobile: " + passengerMobile +
-    "\nWhatsApp: " + whatsapp
+    "🎉 Booking request received!\n\n" +
+    "Thank you " + passengerName +
+    "!\n\nOur Sagar Travels team will contact you soon."
   );
 
 }
+
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
