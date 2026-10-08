@@ -233,6 +233,41 @@ button{
 
 
   <div class="container">
+    <!-- DASHBOARD SUMMARY -->
+
+<div id="summaryCards" style="
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:15px;
+  margin-bottom:20px;
+">
+
+  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
+    <h2 id="totalCount">0</h2>
+    <p>Total Enquiries</p>
+  </div>
+
+  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
+    <h2 id="newCount">0</h2>
+    <p>New</p>
+  </div>
+
+  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
+    <h2 id="contactedCount">0</h2>
+    <p>Contacted</p>
+  </div>
+
+  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
+    <h2 id="confirmedCount">0</h2>
+    <p>Confirmed</p>
+  </div>
+
+  <div style="background:white;padding:20px;border-radius:14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08);">
+    <h2 id="cancelledCount">0</h2>
+    <p>Cancelled</p>
+  </div>
+
+</div>
 
 
     <!-- SEARCH -->
@@ -334,6 +369,47 @@ async function adminLogin(){
 
 
   loadEnquiries();
+  function updateSummary(){
+
+  const total =
+    allEnquiries.length;
+
+  const newCount =
+    allEnquiries.filter(item =>
+      !item.status || item.status === "new"
+    ).length;
+
+  const contacted =
+    allEnquiries.filter(item =>
+      item.status === "contacted"
+    ).length;
+
+  const confirmed =
+    allEnquiries.filter(item =>
+      item.status === "confirmed"
+    ).length;
+
+  const cancelled =
+    allEnquiries.filter(item =>
+      item.status === "cancelled"
+    ).length;
+
+
+  document.getElementById("totalCount").innerText =
+    total;
+
+  document.getElementById("newCount").innerText =
+    newCount;
+
+  document.getElementById("contactedCount").innerText =
+    contacted;
+
+  document.getElementById("confirmedCount").innerText =
+    confirmed;
+
+  document.getElementById("cancelledCount").innerText =
+    cancelled;
+}
 
 }
 
@@ -370,6 +446,7 @@ async function loadEnquiries(){
 
 
   allEnquiries = data || [];
+  updateSummary();
 
   displayEnquiries(allEnquiries);
 
