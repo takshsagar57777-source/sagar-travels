@@ -539,42 +539,54 @@ function searchBus(){
   const from = document.getElementById("from").value;
   const to = document.getElementById("to").value;
   const date = document.getElementById("travelDate").value;
+  const busType = document.getElementById("busType").value;
+  const seating = document.getElementById("seating").value;
+  const passengers = document.getElementById("passengers").value;
+  const journeyType = document.getElementById("journeyType").value;
+  const boarding = document.getElementById("boarding").value;
+  const dropping = document.getElementById("dropping").value;
+  const passengerName = document.getElementById("passengerName").value;
+  const passengerMobile = document.getElementById("passengerMobile").value;
+  const whatsapp = document.getElementById("whatsapp").value;
+  const message = document.getElementById("bookingMessage").value;
 
-  if(!from || !to || !date){
+  if(
+    !from ||
+    !to ||
+    !date ||
+    !busType ||
+    !seating ||
+    !passengers ||
+    !journeyType ||
+    !boarding ||
+    !dropping ||
+    !passengerName ||
+    !passengerMobile ||
+    !whatsapp
+  ){
 
-    alert("Please enter From, To and Travel Date.");
+    alert("Please fill all required booking details.");
 
     return;
   }
 
   alert(
-    "Bus search received!\\n\\nFrom: " +
-    from +
-    "\\nTo: " +
-    to +
-    "\\nDate: " +
-    date
+    "Booking Search Received!\n\n" +
+    "Passenger: " + passengerName +
+    "\nFrom: " + from +
+    "\nTo: " + to +
+    "\nTravel Date: " + date +
+    "\nBus Type: " + busType +
+    "\nBus Capacity: " + seating +
+    "\nPassengers: " + passengers +
+    "\nJourney: " + journeyType +
+    "\nBoarding: " + boarding +
+    "\nDropping: " + dropping +
+    "\nMobile: " + passengerMobile +
+    "\nWhatsApp: " + whatsapp
   );
 
-  const name = document.getElementById("hireName").value;
-  const phone = document.getElementById("hirePhone").value;
-  const pickup = document.getElementById("hirePickup").value;
-  const destination = document.getElementById("hireDestination").value;
-
-  if(!name || !phone || !pickup || !destination){
-
-    alert("Please fill all required details.");
-
-    return;
-  }
-
-  alert(
-    "Thank you " +
-    name +
-    "!\\n\\nYour bus hire enquiry has been received.\\nOur team will contact you soon."
-  );
 }
-
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
