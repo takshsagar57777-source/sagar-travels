@@ -283,15 +283,101 @@ footer{
 
   <div class="booking-box" id="booking">
 
-    <input type="text" id="from" placeholder="From">
+  <input
+    type="text"
+    id="from"
+    placeholder="From"
+  >
 
-    <input type="text" id="to" placeholder="To">
+  <input
+    type="text"
+    id="to"
+    placeholder="To"
+  >
 
-    <input type="date" id="travelDate">
+  <input
+    type="date"
+    id="travelDate"
+  >
 
-    <button onclick="searchBus()">Search Buses</button>
+  <select id="busType">
+    <option value="">Bus Type</option>
+    <option>AC Bus</option>
+    <option>Non-AC Bus</option>
+  </select>
 
-  </div>
+  <select id="seating">
+    <option value="">How many seats?</option>
+    <option>20 Seater</option>
+    <option>27 Seater</option>
+    <option>32 Seater</option>
+    <option>35 Seater</option>
+    <option>40 Seater</option>
+    <option>45 Seater</option>
+    <option>49 Seater</option>
+    <option>52 Seater</option>
+    <option>55 Seater</option>
+    <option>60 Seater</option>
+  </select>
+
+  <input
+    type="number"
+    id="passengers"
+    placeholder="No. of Passengers"
+    min="1"
+  >
+
+  <select id="journeyType">
+    <option value="">Journey Type</option>
+    <option>One Way</option>
+    <option>Round Trip</option>
+  </select>
+
+  <input
+    type="text"
+    id="boarding"
+    placeholder="Boarding Point"
+  >
+
+  <input
+    type="text"
+    id="dropping"
+    placeholder="Dropping Point"
+  >
+
+  <input
+    type="text"
+    id="passengerName"
+    placeholder="Passenger Name"
+  >
+
+  <input
+    type="tel"
+    id="passengerMobile"
+    placeholder="Mobile Number"
+  >
+
+  <input
+    type="tel"
+    id="whatsapp"
+    placeholder="WhatsApp Number"
+  >
+
+  <input
+    class="full"
+    type="text"
+    id="bookingMessage"
+    placeholder="Special Requirement / Message"
+  >
+
+  <button
+    class="full"
+    onclick="searchBus()"
+  >
+    Search Buses
+  </button>
+
+</div>
 
 </section>
 
