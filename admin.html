@@ -306,9 +306,13 @@ button{
 
     <!-- ENQUIRIES -->
 
-    <div id="enquiries">
-      Loading enquiries...
-    </div>
+    <h2>Bus Hire Enquiries</h2>
+<div id="enquiries">Loading enquiries...</div>
+
+<hr style="margin:30px 0;">
+
+<h2>Online Bus Bookings</h2>
+<div id="busBookings">Loading bus bookings...</div>
 
 
   </div>
@@ -404,7 +408,7 @@ function showDashboard(){
   document.getElementById("dashboard").style.display =
     "block";
 
-  loadEnquiries();
+  loadBusBookings();
 
 }
 
@@ -485,7 +489,60 @@ function showDashboard(){
 }
 
 
+/* LOAD ONLINE BUS BOOKINGS */
+async function loadBusBookings() {
+  const box = document.getElementById("busBookings");
 
+  box.innerHTML = "Loading bus bookings...";
+
+  const { data, error } = await supabaseClient
+    .from("bus_bookings")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    box.innerHTML =
+      "<p style='color:red;'>Bookings load nahi hui: " +
+      escapeHtml(error.message) +
+      "</p>";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    box.innerHTML = "<p>No online bus bookings found.</p>";
+    return;
+  }
+
+  box.innerHTML = data.map(function(item) {
+    return `
+      <div class="card">
+        <h3>${escapeHtml(item.passenger_name || "Customer")}</h3>
+        <p><b>From:</b> ${escapeHtml(item.from_location || "")}</p>
+        <p><b>To:</b> ${escapeHtml(item.to_location || "")}</p>
+        <p><b>Travel Date:</b> ${escapeHtml(item.travel_date || "")}</p>
+        <p><b>Bus Type:</b> ${escapeHtml(item.bus_type || "")}</p>
+        <p><b>Seating:</b> ${escapeHtml(item.seating_capacity || "")}</p>
+        <p><b>Passengers:</b> ${escapeHtml(item.passengers ?? "")}</p>
+        <p><b>Journey:</b> ${escapeHtml(item.journey_type || "")}</p>
+        <p><b>Boarding:</b> ${escapeHtml(item.boarding_point || "")}</p>
+        <p><b>Dropping:</b> ${escapeHtml(item.dropping_point || "")}</p>
+        <p><b>Mobile:</b> ${escapeHtml(item.mobile_number || "")}</p>
+        <p><b>WhatsApp:</b> ${escapeHtml(item.whatsapp_number || "")}</p>
+        <p><b>Requirement:</b> ${escapeHtml(item.special_requirement || "None")}</p>
+        <p><b>Status:</b> ${escapeHtml(item.status || "New")}</p>
+        <p><b>Received:</b> ${escapeHtml(item.created_at || "")}</p>
+        <a class="call" href="tel:${escapeHtml(item.mobile_number || "")}">
+          Call Customer
+        </a>
+        <a class="whatsapp"
+           href="https://wa.me/91${String(item.whatsapp_number || "").replace(/\D/g,"").replace(/^91/,"")}"
+           target="_blank" rel="noopener">
+          WhatsApp
+        </a>
+      </div>
+    `;
+  }).join("");
+}
 /* SUMMARY */
 
 function updateSummary(){
