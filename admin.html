@@ -8,7 +8,108 @@
 
 <title>Sagar Travels - Admin</title>
 
+/* PROFESSIONAL SAGAR TRAVELS BILL */
+.bill-paper {
+  background: #fff;
+  color: #111;
+  max-width: 850px;
+  margin: 20px auto;
+  padding: 32px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+}
+.bill-heading {
+  text-align: center;
+  border-bottom: 3px solid #111827;
+  padding-bottom: 14px;
+}
+.bill-heading h1 {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 2px;
+}
+.bill-heading p {
+  margin: 6px 0;
+}
+.bill-title {
+  text-align: center;
+  margin: 18px 0;
+  font-size: 21px;
+  font-weight: bold;
+}
+.bill-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+.bill-details div {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+}
+.bill-table th, .bill-table td {
+  border: 1px solid #999;
+  padding: 11px;
+  text-align: left;
+}
+.bill-table th {
+  background: #eef1f5;
+}
+.bill-total {
+  width: 100%;
+  max-width: 360px;
+  margin-left: auto;
+  border-collapse: collapse;
+}
+.bill-total td {
+  border-bottom: 1px solid #ddd;
+  padding: 9px;
+}
+.bill-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 45px;
+}
+.bill-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #printableBill, #printableBill * {
+    visibility: visible !important;
+  }
+  #printableBill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 12mm;
+    border: none;
+    box-shadow: none;
+  }
+  .bill-actions, .no-print {
+    display: none !important;
+  }
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
+}  
 <style>
+
 
 *{
   box-sizing:border-box;
@@ -1041,26 +1142,100 @@ document.getElementById("billForm").addEventListener("submit", async function(ev
   }
   message.textContent = "Bill successfully save ho gaya! Bill No: " + data.bill_number;
   document.getElementById("billPreview").innerHTML = `
-    <div class="card" id="printableBill">
-      <h2>SAGAR TRAVELS</h2>
-      <h3>Travel Bill</h3>
-      <p><b>Bill No:</b> ${escapeHtml(data.bill_number)}</p>
-      <p><b>Customer:</b> ${escapeHtml(data.customer_name)}</p>
-      <p><b>Phone:</b> ${escapeHtml(data.customer_phone || "-")}</p>
-      <p><b>Bus:</b> ${escapeHtml(data.bus_type || "-")}</p>
-      <p><b>Route:</b> ${escapeHtml(data.from_location)} to ${escapeHtml(data.to_location)}</p>
-      <p><b>Date:</b> ${escapeHtml(data.travel_date)}</p>
-      <hr>
-      <p>Distance: ${km.toFixed(2)} km × ₹${rate.toFixed(2)} = ₹${(km * rate).toFixed(2)}</p>
-      <p>Toll / Parking: ₹${toll.toFixed(2)}</p>
-      <h3>Total Bill: ₹${total.toFixed(2)}</h3>
-      <p>Advance Received: ₹${advance.toFixed(2)}</p>
-      <h3>Balance Due: ₹${balance.toFixed(2)}</h3>
-      <p>Notes: ${escapeHtml(data.notes || "-")}</p>
-      <button type="button" onclick="window.print()">Print / Save PDF</button>
-      <button type="button" onclick="shareBillWhatsApp('${encodeURIComponent(data.customer_phone || "")}', '${encodeURIComponent("Sagar Travels Bill " + data.bill_number + "\\nCustomer: " + data.customer_name + "\\nRoute: " + data.from_location + " to " + data.to_location + "\\nTotal: ₹" + total.toFixed(2) + "\\nAdvance: ₹" + advance.toFixed(2) + "\\nBalance Due: ₹" + balance.toFixed(2))}')">WhatsApp Bill</button>
+  <div class="bill-paper" id="printableBill">
+
+    <div class="bill-heading">
+      <h1>SAGAR TRAVELS</h1>
+      <p>BUS HIRE • BUS BOOKING • TOURS & TRAVELS</p>
+      <p>Ghaziabad, Uttar Pradesh</p>
     </div>
-  `;
+
+    <div class="bill-title">TRAVEL BILL / INVOICE</div>
+
+    <div class="bill-details">
+      <div><b>Bill No.:</b> ${escapeHtml(data.bill_number)}</div>
+      <div><b>Bill Date:</b> ${escapeHtml(new Date().toLocaleDateString("en-IN"))}</div>
+      <div><b>Customer Name:</b> ${escapeHtml(data.customer_name)}</div>
+      <div><b>Mobile:</b> ${escapeHtml(data.customer_phone || "-")}</div>
+      <div><b>Bus Type:</b> ${escapeHtml(data.bus_type || "-")}</div>
+      <div><b>Travel Date:</b> ${escapeHtml(data.travel_date || "-")}</div>
+      <div><b>From:</b> ${escapeHtml(data.from_location)}</div>
+      <div><b>To:</b> ${escapeHtml(data.to_location)}</div>
+    </div>
+
+    <table class="bill-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Rate</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bus Travel</td>
+          <td>${km.toFixed(2)} KM</td>
+          <td>₹${rate.toFixed(2)} / KM</td>
+          <td>₹${(km * rate).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td>Toll / Parking</td>
+          <td>As incurred</td>
+          <td>-</td>
+          <td>₹${toll.toFixed(2)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="bill-total">
+      <tr>
+        <td>Travel Amount</td>
+        <td>₹${(km * rate).toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td>Toll / Parking</td>
+        <td>₹${toll.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td><b>Total Bill</b></td>
+        <td><b>₹${total.toFixed(2)}</b></td>
+      </tr>
+      <tr>
+        <td>Advance Received</td>
+        <td>₹${advance.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td><b>Balance Due</b></td>
+        <td><b>₹${balance.toFixed(2)}</b></td>
+      </tr>
+    </table>
+
+    <p><b>Notes:</b> ${escapeHtml(data.notes || "-")}</p>
+    <p style="text-align:center;margin-top:25px;">
+      Thank you for choosing Sagar Travels!
+    </p>
+
+    <div class="bill-footer">
+      <div>Customer Signature: ______________</div>
+      <div>Authorized Signature: ______________</div>
+    </div>
+
+  </div>
+
+  <div class="bill-actions no-print">
+    <button type="button" onclick="window.print()">
+      Print / Save PDF
+    </button>
+    <button type="button"
+      onclick="shareBillWhatsApp(
+        '${encodeURIComponent(data.customer_phone || "")}',
+        '${encodeURIComponent("SAGAR TRAVELS - Travel Bill\\nBill No: " + data.bill_number + "\\nCustomer: " + data.customer_name + "\\nRoute: " + data.from_location + " to " + data.to_location + "\\nTotal: ₹" + total.toFixed(2) + "\\nAdvance: ₹" + advance.toFixed(2) + "\\nBalance Due: ₹" + balance.toFixed(2))}'
+      )">
+      WhatsApp Bill Details
+    </button>
+  </div>
+`;
   loadSavedBills();
 });
 function shareBillWhatsApp(phoneEncoded, textEncoded) {
