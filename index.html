@@ -442,7 +442,7 @@ footer{
 
       <input type="date" id="hireDate">
 
-      <select id="busType">
+      <select id="hirebusType">
         <option value="">Select Bus Type</option>
         <option>AC Bus</option>
         <option>Non-AC Bus</option>
@@ -614,7 +614,7 @@ async function sendHireEnquiry(){
   const pickup = document.getElementById("hirePickup").value.trim();
   const destination = document.getElementById("hireDestination").value.trim();
   const hireDate = document.getElementById("hireDate").value;
-  const busType = document.getElementById("busType").value;
+  const busType = document.getElementById("hirebusType").value;
   const purpose = document.getElementById("purpose").value.trim();
 
   if(!name || !phone || !pickup || !destination){
