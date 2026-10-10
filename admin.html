@@ -988,7 +988,109 @@ async function logout(){
     "";
 
 }
-
+// TRAVEL BILL GENERATOR
+function updateBillCalculation() {
+  const km = Math.max(0, Number(document.getElementById("billKm").value) || 0);
+  const rate = Math.max(0, Number(document.getElementById("billRate").value) || 0);
+  const toll = Math.max(0, Number(document.getElementById("billToll").value) || 0);
+  const advance = Math.max(0, Number(document.getElementById("billAdvance").value) || 0);
+  const travel = km * rate;
+  const total = travel + toll;
+  const balance = total - advance;
+  document.getElementById("billTravelAmount").textContent = travel.toFixed(2);
+  document.getElementById("billTotal").textContent = total.toFixed(2);
+  document.getElementById("billBalance").textContent = balance.toFixed(2);
+}
+["billKm", "billRate", "billToll", "billAdvance"].forEach(function(id) {
+  document.getElementById(id).addEventListener("input", updateBillCalculation);
+});
+document.getElementById("billForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+  const km = Number(document.getElementById("billKm").value) || 0;
+  const rate = Number(document.getElementById("billRate").value) || 0;
+  const toll = Number(document.getElementById("billToll").value) || 0;
+  const advance = Number(document.getElementById("billAdvance").value) || 0;
+  const total = km * rate + toll;
+  const balance = total - advance;
+  const bill = {
+    bill_number: "ST-" + Date.now(),
+    customer_name: document.getElementById("billName").value.trim(),
+    customer_phone: document.getElementById("billPhone").value.trim(),
+    bus_type: document.getElementById("billBus").value.trim(),
+    from_location: document.getElementById("billFrom").value.trim(),
+    to_location: document.getElementById("billTo").value.trim(),
+    travel_date: document.getElementById("billDate").value,
+    total_km: km,
+    rate_per_km: rate,
+    toll_parking: toll,
+    total_amount: total,
+    advance_amount: advance,
+    balance_amount: balance,
+    notes: document.getElementById("billNotes").value.trim()
+  };
+  const message = document.getElementById("billMessage");
+  message.textContent = "Bill save ho raha hai...";
+  const { data, error } = await supabaseClient
+    .from("travel_bills")
+    .insert([bill])
+    .select()
+    .single();
+  if (error) {
+    message.textContent = "Bill save nahi hua: " + error.message;
+    return;
+  }
+  message.textContent = "Bill successfully save ho gaya! Bill No: " + data.bill_number;
+  document.getElementById("billPreview").innerHTML = `
+    <div class="card" id="printableBill">
+      <h2>SAGAR TRAVELS</h2>
+      <h3>Travel Bill</h3>
+      <p><b>Bill No:</b> ${escapeHtml(data.bill_number)}</p>
+      <p><b>Customer:</b> ${escapeHtml(data.customer_name)}</p>
+      <p><b>Phone:</b> ${escapeHtml(data.customer_phone || "-")}</p>
+      <p><b>Bus:</b> ${escapeHtml(data.bus_type || "-")}</p>
+      <p><b>Route:</b> ${escapeHtml(data.from_location)} to ${escapeHtml(data.to_location)}</p>
+      <p><b>Date:</b> ${escapeHtml(data.travel_date)}</p>
+      <hr>
+      <p>Distance: ${km.toFixed(2)} km × ₹${rate.toFixed(2)} = ₹${(km * rate).toFixed(2)}</p>
+      <p>Toll / Parking: ₹${toll.toFixed(2)}</p>
+      <h3>Total Bill: ₹${total.toFixed(2)}</h3>
+      <p>Advance Received: ₹${advance.toFixed(2)}</p>
+      <h3>Balance Due: ₹${balance.toFixed(2)}</h3>
+      <p>Notes: ${escapeHtml(data.notes || "-")}</p>
+      <button type="button" onclick="window.print()">Print / Save PDF</button>
+      <button type="button" onclick="shareBillWhatsApp('${encodeURIComponent(data.customer_phone || "")}', '${encodeURIComponent("Sagar Travels Bill " + data.bill_number + "\\nCustomer: " + data.customer_name + "\\nRoute: " + data.from_location + " to " + data.to_location + "\\nTotal: ₹" + total.toFixed(2) + "\\nAdvance: ₹" + advance.toFixed(2) + "\\nBalance Due: ₹" + balance.toFixed(2))}')">WhatsApp Bill</button>
+    </div>
+  `;
+  loadSavedBills();
+});
+function shareBillWhatsApp(phoneEncoded, textEncoded) {
+  const phone = decodeURIComponent(phoneEncoded).replace(/\D/g, "");
+  const text = decodeURIComponent(textEncoded);
+  window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(text), "_blank");
+}
+async function loadSavedBills() {
+  const area = document.getElementById("savedBills");
+  const { data, error } = await supabaseClient
+    .from("travel_bills")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    area.textContent = "Bills load nahi hue: " + error.message;
+    return;
+  }
+  if (!data || data.length === 0) {
+    area.textContent = "Abhi koi bill save nahi hua.";
+    return;
+  }
+  area.innerHTML = data.map(function(b) {
+    return `<div class="card">
+      <b>${escapeHtml(b.bill_number)}</b> — ${escapeHtml(b.customer_name)}
+      <p>${escapeHtml(b.from_location)} to ${escapeHtml(b.to_location)}</p>
+      <p>Total: ₹${Number(b.total_amount).toFixed(2)} | Balance: ₹${Number(b.balance_amount).toFixed(2)}</p>
+    </div>`;
+  }).join("");
+}
+updateBillCalculation();
 </script>
 
 </body>
