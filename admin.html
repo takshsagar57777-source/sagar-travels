@@ -321,7 +321,59 @@ button{
 
 
     <!-- ENQUIRIES -->
+<!-- TRAVEL BILL GENERATOR -->
+<hr style="margin:30px 0;">
+<h2>Travel Bill Generator</h2>
 
+<div class="search-box">
+  <form id="billForm">
+    <label>Customer Name</label>
+    <input id="billName" required placeholder="Customer ka naam">
+
+    <label>Customer Phone</label>
+    <input id="billPhone" type="tel" placeholder="Mobile number">
+
+    <label>Bus Type</label>
+    <input id="billBus" placeholder="AC / Non-AC / Volvo etc.">
+
+    <label>From</label>
+    <input id="billFrom" required placeholder="Starting location">
+
+    <label>To</label>
+    <input id="billTo" required placeholder="Destination">
+
+    <label>Travel Date</label>
+    <input id="billDate" type="date" required>
+
+    <label>Total Kilometers</label>
+    <input id="billKm" type="number" min="0" step="0.01" required placeholder="Total KM">
+
+    <label>Rate per Kilometer (₹)</label>
+    <input id="billRate" type="number" min="0" step="0.01" required placeholder="Agreed rate">
+
+    <label>Toll / Parking (₹)</label>
+    <input id="billToll" type="number" min="0" step="0.01" value="0" required>
+
+    <label>Advance Received (₹)</label>
+    <input id="billAdvance" type="number" min="0" step="0.01" value="0" required>
+
+    <label>Notes</label>
+    <input id="billNotes" placeholder="Extra details (optional)">
+
+    <div id="billCalculation">
+      <p>Travel Amount: ₹<span id="billTravelAmount">0.00</span></p>
+      <p>Total Bill: ₹<span id="billTotal">0.00</span></p>
+      <p>Balance Due: ₹<span id="billBalance">0.00</span></p>
+    </div>
+
+    <button type="submit" class="save">Save Bill</button>
+  </form>
+  <div id="billMessage"></div>
+  <div id="billPreview"></div>
+</div>
+
+<h2>Saved Travel Bills</h2>
+<div id="savedBills">Bills load hone par yahan dikhenge.</div>
     <h2>Bus Hire Enquiries</h2>
 <div id="enquiries">Loading enquiries...</div>
 
