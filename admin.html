@@ -428,6 +428,11 @@ button{
 
 <div class="search-box">
   <form id="billForm">
+    <label>Bill kis naam se banana hai?</label>
+<select id="billBrand" required>
+  <option value="SAGAR TRAVELS">Sagar Travels</option>
+  <option value="SAGAR TOURIST BUS SERVICE">Sagar Tourist Bus Service</option>
+</select>
     <label>Customer Name</label>
     <input id="billName" required placeholder="Customer ka naam">
 
@@ -449,8 +454,9 @@ button{
     <label>Total Kilometers</label>
     <input id="billKm" type="number" min="0" step="0.01" required placeholder="Total KM">
 
-    <label>Rate per Kilometer (₹)</label>
-    <input id="billRate" type="number" min="0" step="0.01" required placeholder="Agreed rate">
+    <label>Total Bus Fare (₹) — Customer se tay hua kiraya</label>
+<input id="billRate" type="number" min="0" step="0.01"
+  required placeholder="Jaise 15000">
 
     <label>Toll / Parking (₹)</label>
     <input id="billToll" type="number" min="0" step="0.01" value="0" required>
@@ -1095,7 +1101,7 @@ function updateBillCalculation() {
   const rate = Math.max(0, Number(document.getElementById("billRate").value) || 0);
   const toll = Math.max(0, Number(document.getElementById("billToll").value) || 0);
   const advance = Math.max(0, Number(document.getElementById("billAdvance").value) || 0);
-  const travel = km * rate;
+  const travel = rate;
   const total = travel + toll;
   const balance = total - advance;
   document.getElementById("billTravelAmount").textContent = travel.toFixed(2);
@@ -1111,7 +1117,7 @@ document.getElementById("billForm").addEventListener("submit", async function(ev
   const rate = Number(document.getElementById("billRate").value) || 0;
   const toll = Number(document.getElementById("billToll").value) || 0;
   const advance = Number(document.getElementById("billAdvance").value) || 0;
-  const total = km * rate + toll;
+  const total = rate + toll;
   const balance = total - advance;
   const bill = {
     bill_number: "ST-" + Date.now(),
@@ -1122,7 +1128,7 @@ document.getElementById("billForm").addEventListener("submit", async function(ev
     to_location: document.getElementById("billTo").value.trim(),
     travel_date: document.getElementById("billDate").value,
     total_km: km,
-    rate_per_km: rate,
+    rate_per_km: 0,
     toll_parking: toll,
     total_amount: total,
     advance_amount: advance,
