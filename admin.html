@@ -670,9 +670,19 @@ function showDashboard(){
 
   loadEnquiries();
   loadBusBookings();
+  loadSavedBills();
 }
 
-
+<button
+    type="button"
+    class="login-button"
+    onclick="adminLogin().catch(function(err) {
+      console.error(err);
+      document.getElementById('loginError').innerText =
+        'Error: ' + err.message;
+    })">
+    Login
+  </button>
 
 /* LOAD ENQUIRIES */
 
