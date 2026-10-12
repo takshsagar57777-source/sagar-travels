@@ -1198,7 +1198,7 @@ document.getElementById("billForm").addEventListener("submit", async function(ev
   const total = rate + toll;
   const balance = total - advance;
   const bill = {
-    bill_number: "ST-" + Date.now(),
+    bill_number: null
     customer_name: document.getElementById("billName").value.trim(),
     customer_phone: document.getElementById("billPhone").value.trim(),
     bus_type: document.getElementById("billBus").value.trim(),
