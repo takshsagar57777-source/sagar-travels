@@ -1151,7 +1151,7 @@ document.getElementById("billForm").addEventListener("submit", async function(ev
   <div class="bill-paper" id="printableBill">
 
     <div class="bill-heading">
-      <h1>SAGAR TRAVELS</h1>
+      <h1>${escapeHtml(document.getElementById("billBrand").value)}</h1>
       <p>BUS HIRE • BUS BOOKING • TOURS & TRAVELS</p>
       <p>Ghaziabad, Uttar Pradesh</p>
     </div>
