@@ -685,7 +685,60 @@ function showDashboard(){
   </button>
 
 /* LOAD ENQUIRIES */
+/* LOAD SAVED BILLS */
 
+async function loadSavedBills() {
+  const box = document.getElementById("savedBills");
+  if (!box) return;
+
+  box.textContent = "Bills load ho rahe hain...";
+
+  const { data, error } = await supabaseClient
+    .from("travel_bills")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    box.textContent = "Bills load nahi hue: " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    box.textContent = "Abhi koi saved bill nahi hai.";
+    return;
+  }
+
+  box.innerHTML = "";
+
+  data.forEach(function(bill) {
+    const card = document.createElement("div");
+    card.style.cssText =
+      "border:1px solid #ddd;border-radius:10px;padding:14px;margin:10px 0;background:white;color:#222;";
+
+    const heading = document.createElement("h3");
+    heading.textContent = bill.bill_number || "Travel Bill";
+
+    const details = document.createElement("p");
+    details.textContent =
+      "Customer: " + (bill.customer_name || "-") +
+      " | Mobile: " + (bill.customer_phone || "-");
+
+    const route = document.createElement("p");
+    route.textContent =
+      (bill.from_location || "-") + " → " +
+      (bill.to_location || "-") +
+      " | Date: " + (bill.travel_date || "-");
+
+    const amounts = document.createElement("p");
+    amounts.textContent =
+      "Total: ₹" + Number(bill.total_amount || 0).toFixed(2) +
+      " | Advance: ₹" + Number(bill.advance_amount || 0).toFixed(2) +
+      " | Balance: ₹" + Number(bill.balance_amount || 0).toFixed(2);
+
+    card.append(heading, details, route, amounts);
+    box.appendChild(card);
+  });
+}
   async function loadEnquiries(){
 
   const box = document.getElementById("enquiries");
