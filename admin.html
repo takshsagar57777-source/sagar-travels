@@ -613,6 +613,7 @@ let allEnquiries = [];
 /* LOGIN */
 
 async function adminLogin(){
+  try {
   const email =
     document.getElementById("adminEmail")
       .value
@@ -653,7 +654,10 @@ async function adminLogin(){
 
 
   showDashboard();
-
+} catch (err) {
+  document.getElementById("loginError").innerText =
+    "Login Error: " + err.message;
+}
 }
 
 
