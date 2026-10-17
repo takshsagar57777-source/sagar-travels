@@ -608,41 +608,45 @@ let allEnquiries = [];
 
 async function adminLogin() {
   const errorBox = document.getElementById("loginError");
-  errorBox.textContent = "";
-
   const email = document.getElementById("adminEmail").value.trim();
   const password = document.getElementById("adminPassword").value;
+
+  errorBox.textContent = "";
 
   if (!email || !password) {
     errorBox.textContent = "Email aur password enter karo.";
     return;
   }
 
-  try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
+  errorBox.textContent = "Login ho raha hai, please wait...";
 
-    if (error) {
-      console.error("Login error:", error);
-      errorBox.textContent = "Login failed: " + error.message;
+  try {
+    const result = await Promise.race([
+      supabaseClient.auth.signInWithPassword({ email, password }),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(
+          new Error("Login 15 seconds se atka hai. Page refresh karke dobara try karo.")
+        ), 15000)
+      )
+    ]);
+
+    if (result.error) {
+      errorBox.textContent = "Login failed: " + result.error.message;
       return;
     }
 
-    if (!data.session) {
+    if (!result.data.session) {
       errorBox.textContent = "Login session nahi mili. Dobara try karo.";
       return;
     }
 
+    errorBox.textContent = "";
     showDashboard();
 
   } catch (err) {
-    console.error("Login error:", err);
-    errorBox.textContent = "Error: " + err.message;
+    errorBox.textContent = err.message || "Login mein error aaya.";
   }
 }
-
 
 /* SHOW DASHBOARD */
 
