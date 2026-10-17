@@ -108,6 +108,7 @@
     margin: 8mm;
   }
 }  
+</style>  
 <style>
 /* PREMIUM BILL DESIGN */
 .bill-paper {
@@ -608,6 +609,8 @@ let allEnquiries = [];
 
 async function adminLogin() {
   const errorBox = document.getElementById("loginError");
+  const button = document.querySelector(".login-button");
+
   const email = document.getElementById("adminEmail").value.trim();
   const password = document.getElementById("adminPassword").value;
 
@@ -618,33 +621,59 @@ async function adminLogin() {
     return;
   }
 
-  errorBox.textContent = "Login ho raha hai, please wait...";
+  button.disabled = true;
+  button.textContent = "Please wait...";
+  errorBox.textContent = "Login request shuru ho gayi hai...";
+
+  let timeoutId;
 
   try {
+    if (!window.supabase || !supabaseClient) {
+      throw new Error("Supabase library load nahi hui. Page refresh karo.");
+    }
+
     const result = await Promise.race([
-      supabaseClient.auth.signInWithPassword({ email, password }),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(
-          new Error("Login 15 seconds se atka hai. Page refresh karke dobara try karo.")
-        ), 15000)
-      )
+      supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      }),
+      new Promise((_, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error(
+            "15 seconds tak Supabase se jawab nahi aaya."
+          ));
+        }, 15000);
+      })
     ]);
 
     if (result.error) {
-      errorBox.textContent = "Login failed: " + result.error.message;
+      errorBox.textContent =
+        "Login failed: " + result.error.message;
       return;
     }
 
-    if (!result.data.session) {
-      errorBox.textContent = "Login session nahi mili. Dobara try karo.";
+    if (!result.data || !result.data.session) {
+      errorBox.textContent = "Login session nahi mili.";
       return;
     }
 
-    errorBox.textContent = "";
-    showDashboard();
+    errorBox.textContent = "Login successful! Dashboard khul raha hai...";
+
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    loadEnquiries();
+    loadBusBookings();
+    loadSavedBills();
 
   } catch (err) {
-    errorBox.textContent = err.message || "Login mein error aaya.";
+    console.error("Admin login error:", err);
+    errorBox.textContent =
+      err.message || "Login mein error aaya.";
+  } finally {
+    clearTimeout(timeoutId);
+    button.disabled = false;
+    button.textContent = "Login";
   }
 }
 
