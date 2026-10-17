@@ -625,6 +625,8 @@ async function adminLogin() {
   button.textContent = "Please wait...";
   errorBox.textContent = "Login request shuru ho gayi hai...";
 
+  alert("STEP 1: adminLogin chal raha hai");
+
   let timeoutId;
 
   try {
@@ -632,6 +634,7 @@ async function adminLogin() {
       throw new Error("Supabase library load nahi hui. Page refresh karo.");
     }
 
+    alert("STEP 2: Supabase request shuru hone wali hai");
     const result = await Promise.race([
       supabaseClient.auth.signInWithPassword({
         email: email,
