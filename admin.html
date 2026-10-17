@@ -1,1498 +1,762 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
 <title>Sagar Travels - Admin</title>
+
 <style>
-/* PROFESSIONAL SAGAR TRAVELS BILL */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  color: #222;
+}
+
+.login-box {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0,0,0,.12);
+}
+
+.login-box h1 { text-align: center; }
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+button {
+  padding: 11px 15px;
+  border: 0;
+  border-radius: 8px;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled { opacity: .6; cursor: wait; }
+
+.login-button { width: 100%; margin-top: 10px; }
+
+.error {
+  color: #b91c1c;
+  text-align: center;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+#dashboard { display: none; }
+
+.header {
+  background: #111827;
+  color: white;
+  padding: 20px;
+}
+
+.header h1 { margin: 0; }
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px 15px;
+}
+
+.logout {
+  float: right;
+  background: #dc2626;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.summary-card, .card, .search-box {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.07);
+  margin-bottom: 15px;
+}
+
+.summary-card { text-align: center; }
+.summary-card h2 { margin: 0 0 8px; font-size: 28px; }
+.summary-card p { margin: 0; color: #666; }
+
+.save { background: #2563eb; }
+.call, .whatsapp {
+  display: inline-block;
+  padding: 9px 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+  margin: 4px;
+}
+.call { background: #16a34a; }
+.whatsapp { background: #25a366; }
+
+.actions, .bill-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.message { text-align: center; padding: 25px; color: #666; }
+
 .bill-paper {
-  background: #fff;
-  color: #111;
   max-width: 850px;
   margin: 20px auto;
-  padding: 32px;
-  border: 1px solid #ccc;
+  padding: 28px;
+  background: white;
+  color: #1f2937;
+  border: 2px solid #c9a227;
   font-family: Arial, sans-serif;
 }
+
 .bill-heading {
   text-align: center;
-  border-bottom: 3px solid #111827;
-  padding-bottom: 14px;
+  background: #111827;
+  color: white;
+  padding: 20px;
+  border-bottom: 5px solid #c9a227;
 }
-.bill-heading h1 {
-  margin: 0;
-  font-size: 30px;
-  letter-spacing: 2px;
-}
-.bill-heading p {
-  margin: 6px 0;
-}
+
+.bill-heading h1 { color: #e6c66a; margin: 0; }
 .bill-title {
   text-align: center;
-  margin: 18px 0;
-  font-size: 21px;
+  font-size: 22px;
   font-weight: bold;
+  margin: 22px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #c9a227;
 }
+
 .bill-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
   margin: 18px 0;
 }
-.bill-details div {
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-.bill-table {
+
+.bill-details div { border: 1px solid #ddd; padding: 10px; }
+
+.bill-table, .bill-total {
   width: 100%;
   border-collapse: collapse;
   margin: 18px 0;
 }
-.bill-table th, .bill-table td {
-  border: 1px solid #999;
-  padding: 11px;
+
+.bill-table th, .bill-table td, .bill-total td {
+  border: 1px solid #ddd;
+  padding: 10px;
   text-align: left;
 }
-.bill-table th {
-  background: #eef1f5;
-}
-.bill-total {
-  width: 100%;
-  max-width: 360px;
-  margin-left: auto;
-  border-collapse: collapse;
-}
-.bill-total td {
-  border-bottom: 1px solid #ddd;
-  padding: 9px;
-}
+
+.bill-table th { background: #111827; color: white; }
+
+.bill-total { max-width: 420px; margin-left: auto; }
 .bill-footer {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
-  margin-top: 45px;
+  gap: 15px;
+  margin-top: 40px;
 }
-.bill-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 15px 0;
+
+@media (max-width: 600px) {
+  .login-box { margin: 30px 15px; }
+  .bill-paper { padding: 12px; }
+  .bill-details { grid-template-columns: 1fr; }
+  .bill-footer { flex-direction: column; }
 }
+
 @media print {
-  body * {
-    visibility: hidden !important;
-  }
-  #printableBill, #printableBill * {
-    visibility: visible !important;
-  }
+  body * { visibility: hidden !important; }
+  #printableBill, #printableBill * { visibility: visible !important; }
   #printableBill {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    max-width: none;
     margin: 0;
-    padding: 12mm;
-    border: none;
-    box-shadow: none;
+    padding: 8mm;
+    border: 0;
   }
-  .bill-actions, .no-print {
-    display: none !important;
-  }
-  @page {
-    size: A4;
-    margin: 8mm;
-  }
-}  
-</style>  
-<style>
-/* PREMIUM BILL DESIGN */
-.bill-paper {
-  background: #ffffff;
-  color: #1f2937;
-  max-width: 850px;
-  margin: 20px auto;
-  padding: 32px;
-  border: 2px solid #c9a227;
-  border-radius: 10px;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-  font-family: Arial, sans-serif;
-}
-
-.bill-heading {
-  background: #111827;
-  color: #ffffff;
-  padding: 24px 16px;
-  border-bottom: 5px solid #c9a227;
-  text-align: center;
-}
-
-.bill-heading h1 {
-  color: #e6c66a;
-  font-size: 30px;
-  letter-spacing: 2px;
-  margin: 0;
-}
-
-.bill-heading p {
-  color: #ffffff;
-  margin: 7px 0;
-}
-
-.bill-title {
-  text-align: center;
-  color: #111827;
-  font-size: 23px;
-  font-weight: bold;
-  margin: 24px 0;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #c9a227;
-}
-
-.bill-details {
-  line-height: 1.9;
-}
-
-.bill-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-}
-
-.bill-table th {
-  background: #111827;
-  color: #ffffff;
-  padding: 12px;
-}
-
-.bill-table td {
-  border: 1px solid #e5e7eb;
-  padding: 11px;
-}
-
-.bill-total {
-  background: #f8f3df;
-  border-left: 5px solid #c9a227;
-  padding: 16px;
-  margin-top: 18px;
-  line-height: 2;
-}
-
-.bill-footer {
-  margin-top: 30px;
-  padding-top: 14px;
-  border-top: 1px dashed #9ca3af;
-  text-align: center;
-  font-size: 12px;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f4f6f9;
-  color:#222;
-}
-
-.login-box{
-  max-width:420px;
-  margin:80px auto;
-  background:white;
-  padding:30px;
-  border-radius:16px;
-  box-shadow:0 5px 25px rgba(0,0,0,.12);
-}
-
-.login-box h1{
-  text-align:center;
-  margin-top:0;
-}
-
-input,
-select{
-  width:100%;
-  padding:13px;
-  margin:8px 0;
-  border:1px solid #ddd;
-  border-radius:8px;
-  font-size:15px;
-}
-
-button{
-  padding:12px 16px;
-  border:0;
-  border-radius:8px;
-  background:#111827;
-  color:white;
-  font-size:15px;
-  cursor:pointer;
-}
-
-.login-button{
-  width:100%;
-  margin-top:10px;
-}
-
-.error{
-  color:red;
-  text-align:center;
-  margin-top:12px;
-}
-
-#dashboard{
-  display:none;
-}
-
-.header{
-  background:#111827;
-  color:white;
-  padding:20px;
-}
-
-.header h1{
-  margin:0;
-}
-
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:20px 15px;
-}
-
-.logout{
-  float:right;
-  background:#dc2626;
-  padding:8px 15px;
-}
-
-.summary{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:15px;
-  margin-bottom:20px;
-}
-
-.summary-card{
-  background:white;
-  padding:20px;
-  border-radius:14px;
-  text-align:center;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.summary-card h2{
-  margin:0 0 8px;
-  font-size:30px;
-}
-
-.summary-card p{
-  margin:0;
-  color:#666;
-}
-
-.search-box{
-  background:white;
-  padding:18px;
-  border-radius:14px;
-  margin-bottom:20px;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.card{
-  background:white;
-  padding:20px;
-  margin-bottom:15px;
-  border-radius:14px;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.card h3{
-  margin-top:0;
-}
-
-.actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:15px;
-}
-
-.call{
-  display:inline-block;
-  padding:10px 14px;
-  background:#16a34a;
-  color:white;
-  text-decoration:none;
-  border-radius:7px;
-}
-
-.whatsapp{
-  display:inline-block;
-  padding:10px 14px;
-  background:#25D366;
-  color:white;
-  text-decoration:none;
-  border-radius:7px;
-}
-
-.save{
-  background:#2563eb;
-}
-
-.status{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:13px;
-}
-
-.status-new{
-  background:#e5e7eb;
-}
-
-.status-contacted{
-  background:#fef3c7;
-}
-
-.status-confirmed{
-  background:#dcfce7;
-}
-
-.status-cancelled{
-  background:#fee2e2;
-}
-
-.message{
-  text-align:center;
-  padding:30px;
-  color:#666;
-}
-#enquiries,
-#busBookings {
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-#enquiries button,
-#busBookings button {
-  font-size: 12px;
-  padding: 6px 9px;
-}
-
-#enquiries a,
-#busBookings a {
-  font-size: 12px;
-  overflow-wrap: anywhere;
+  .no-print { display: none !important; }
+  @page { size: A4; margin: 8mm; }
 }
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- LOGIN -->
-
 <div id="loginPage" class="login-box">
-
   <h1>Sagar Travels</h1>
+  <p style="text-align:center;color:#666;">Admin Login</p>
 
-  <p style="text-align:center;color:#666;">
-    Admin Login
-  </p>
+  <form id="loginForm">
+    <input type="email" id="adminEmail"
+      placeholder="Admin Email" autocomplete="username" required>
 
-  <input
-    type="email"
-    id="adminEmail"
-    placeholder="Admin Email"
-  >
+    <input type="password" id="adminPassword"
+      placeholder="Password" autocomplete="current-password" required>
 
-  <input
-    type="password"
-    id="adminPassword"
-    placeholder="Password"
-  >
+    <button type="submit" class="login-button" id="loginButton">
+      Login
+    </button>
+  </form>
 
-<button
-  type="button"
-  class="login-button"
-  onclick="adminLogin()">
-  Login
-</button>
-  
-  <div id="loginError" class="error"></div>
-
+  <div id="loginError" class="error" role="status"></div>
 </div>
-
-
-<!-- DASHBOARD -->
 
 <div id="dashboard">
-
   <div class="header">
-
-    <button
-      class="logout"
-      onclick="logout()">
-      Logout
-    </button>
-
+    <button class="logout" id="logoutButton">Logout</button>
     <h1>Sagar Travels Admin Dashboard</h1>
-
-    <p>Bus Hire Enquiries</p>
-
+    <p>Bus Hire Enquiries, Bookings and Bills</p>
   </div>
-
 
   <div class="container">
-
-
-    <!-- SUMMARY -->
-
     <div class="summary">
-
-      <div class="summary-card">
-        <h2 id="totalCount">0</h2>
-        <p>Total Enquiries</p>
-      </div>
-
-      <div class="summary-card">
-        <h2 id="newCount">0</h2>
-        <p>New</p>
-      </div>
-
-      <div class="summary-card">
-        <h2 id="contactedCount">0</h2>
-        <p>Contacted</p>
-      </div>
-
-      <div class="summary-card">
-        <h2 id="confirmedCount">0</h2>
-        <p>Confirmed</p>
-      </div>
-
-      <div class="summary-card">
-        <h2 id="cancelledCount">0</h2>
-        <p>Cancelled</p>
-      </div>
-
+      <div class="summary-card"><h2 id="totalCount">0</h2><p>Total Enquiries</p></div>
+      <div class="summary-card"><h2 id="newCount">0</h2><p>New</p></div>
+      <div class="summary-card"><h2 id="contactedCount">0</h2><p>Contacted</p></div>
+      <div class="summary-card"><h2 id="confirmedCount">0</h2><p>Confirmed</p></div>
+      <div class="summary-card"><h2 id="cancelledCount">0</h2><p>Cancelled</p></div>
     </div>
-
-
-    <!-- SEARCH -->
 
     <div class="search-box">
-
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search by customer name or phone..."
-        oninput="filterEnquiries()"
-      >
-
+      <input type="text" id="searchInput"
+        placeholder="Search customer name or phone">
     </div>
 
+    <h2>Travel Bill Generator</h2>
+    <div class="search-box">
+      <form id="billForm">
+        <label>Bill Brand</label>
+        <select id="billBrand" required>
+          <option value="SAGAR TRAVELS">Sagar Travels</option>
+          <option value="SAGAR TOURIST BUS SERVICE">Sagar Tourist Bus Service</option>
+        </select>
 
-    <!-- ENQUIRIES -->
-<!-- TRAVEL BILL GENERATOR -->
-<hr style="margin:30px 0;">
-<h2>Travel Bill Generator</h2>
+        <label>Customer Name</label>
+        <input id="billName" required placeholder="Customer name">
 
-<div class="search-box">
-  <form id="billForm">
-    <label>Bill kis naam se banana hai?</label>
-<select id="billBrand" required>
-  <option value="SAGAR TRAVELS">Sagar Travels</option>
-  <option value="SAGAR TOURIST BUS SERVICE">Sagar Tourist Bus Service</option>
-</select>
-    <label>Customer Name</label>
-    <input id="billName" required placeholder="Customer ka naam">
+        <label>Customer Phone</label>
+        <input id="billPhone" type="tel" placeholder="Mobile number">
 
-    <label>Customer Phone</label>
-    <input id="billPhone" type="tel" placeholder="Mobile number">
+        <label>Bus Type</label>
+        <input id="billBus" placeholder="AC / Non-AC / Volvo">
 
-    <label>Bus Type</label>
-    <input id="billBus" placeholder="AC / Non-AC / Volvo etc.">
+        <label>From</label>
+        <input id="billFrom" required placeholder="Starting location">
 
-    <label>From</label>
-    <input id="billFrom" required placeholder="Starting location">
+        <label>To</label>
+        <input id="billTo" required placeholder="Destination">
 
-    <label>To</label>
-    <input id="billTo" required placeholder="Destination">
+        <label>Travel Date</label>
+        <input id="billDate" type="date" required>
 
-    <label>Travel Date</label>
-    <input id="billDate" type="date" required>
+        <label>Total Kilometers (display only)</label>
+        <input id="billKm" type="number" min="0" step="0.01" required>
 
-    <label>Total Kilometers</label>
-    <input id="billKm" type="number" min="0" step="0.01" required placeholder="Total KM">
+        <label>Agreed Total Bus Fare (₹)</label>
+        <input id="billRate" type="number" min="0" step="0.01" required>
 
-    <label>Total Bus Fare (₹) — Customer se tay hua kiraya</label>
-<input id="billRate" type="number" min="0" step="0.01"
-  required placeholder="Jaise 15000">
+        <label>Toll / Parking (₹)</label>
+        <input id="billToll" type="number" min="0" step="0.01" value="0" required>
 
-    <label>Toll / Parking (₹)</label>
-    <input id="billToll" type="number" min="0" step="0.01" value="0" required>
+        <label>Advance Received (₹)</label>
+        <input id="billAdvance" type="number" min="0" step="0.01" value="0" required>
 
-    <label>Advance Received (₹)</label>
-    <input id="billAdvance" type="number" min="0" step="0.01" value="0" required>
+        <label>Notes</label>
+        <input id="billNotes" placeholder="Optional details">
 
-    <label>Notes</label>
-    <input id="billNotes" placeholder="Extra details (optional)">
+        <div id="billCalculation">
+          <p>Agreed Bus Fare: ₹<span id="billTravelAmount">0.00</span></p>
+          <p>Total Bill: ₹<span id="billTotal">0.00</span></p>
+          <p>Balance Due: ₹<span id="billBalance">0.00</span></p>
+        </div>
 
-    <div id="billCalculation">
-      <p>Travel Amount: ₹<span id="billTravelAmount">0.00</span></p>
-      <p>Total Bill: ₹<span id="billTotal">0.00</span></p>
-      <p>Balance Due: ₹<span id="billBalance">0.00</span></p>
+        <button type="submit" class="save" id="saveBillButton">Save Bill</button>
+      </form>
+
+      <div id="billMessage" role="status"></div>
+      <div id="billPreview"></div>
     </div>
-
-    <button type="submit" class="save">Save Bill</button>
-  </form>
-  <div id="billMessage"></div>
-  <div id="billPreview"></div>
-</div>
 
     <h2>Bus Hire Enquiries</h2>
-<div id="enquiries">Loading enquiries...</div>
+    <div id="enquiries">Login ke baad enquiries yahan dikhenगी.</div>
 
-<hr style="margin:30px 0;">
-
-<h2>Online Bus Bookings</h2>
-<div id="busBookings">Loading bus bookings...</div>
+    <hr>
+    <h2>Online Bus Bookings</h2>
+    <div id="busBookings">Login ke baad bookings yahan dikhenगी.</div>
 
     <h2>Saved Bills</h2>
-    <div id="savedBills">Loading saved bills...</div>
-
-
+    <div id="savedBills">Login ke baad saved bills yahan dikhenge.</div>
   </div>
-
 </div>
-
-
-<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
+const SUPABASE_URL = "https://lyyrajvxhumbqplqelei.supabase.co";
+const SUPABASE_KEY = "sb_publishable_38vwqEeCbiQ9D8fLH2n4gA_T7Qy7L_b";
 
-
-/* SUPABASE CONNECTION */
-
-const SUPABASE_URL =
-"https://lyyrajvxhumbqplqelei.supabase.co";
-
-
-const SUPABASE_KEY =
-"sb_publishable_38vwqEeCbiQ9D8fLH2n4gA_T7Qy7L_b";
-
-
-const supabaseClient =
-window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_KEY
+  SUPABASE_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
 );
 
-
 let allEnquiries = [];
+let loginBusy = false;
 
+document.getElementById("loginForm").addEventListener("submit", adminLogin);
+document.getElementById("logoutButton").addEventListener("click", logout);
+document.getElementById("searchInput").addEventListener("input", filterEnquiries);
 
-
-/* LOGIN */
-
-async function adminLogin() {
-  const errorBox = document.getElementById("loginError");
-  const button = document.querySelector(".login-button");
+async function adminLogin(event) {
+  event.preventDefault();
+  if (loginBusy) return;
 
   const email = document.getElementById("adminEmail").value.trim();
   const password = document.getElementById("adminPassword").value;
+  const errorBox = document.getElementById("loginError");
+  const button = document.getElementById("loginButton");
 
   errorBox.textContent = "";
-  alert("ADMIN LOGIN FUNCTION STARTED");
 
   if (!email || !password) {
     errorBox.textContent = "Email aur password enter karo.";
     return;
   }
 
+  loginBusy = true;
   button.disabled = true;
   button.textContent = "Please wait...";
-  errorBox.textContent = "Login request shuru ho gayi hai...";
-
-  alert("STEP 1: adminLogin chal raha hai");
 
   let timeoutId;
 
   try {
-    if (!window.supabase || !supabaseClient) {
-      throw new Error("Supabase library load nahi hui. Page refresh karo.");
-    }
-
-    alert("STEP 2: Supabase request shuru hone wali hai");
     const result = await Promise.race([
-      supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      }),
+      supabaseClient.auth.signInWithPassword({ email, password }),
       new Promise((_, reject) => {
-        timeoutId = setTimeout(() => {
-          reject(new Error(
-            "15 seconds tak Supabase se jawab nahi aaya."
-          ));
-        }, 15000);
+        timeoutId = setTimeout(
+          () => reject(new Error("Login 15 seconds se atka hai. Page refresh karke dobara try karo.")),
+          15000
+        );
       })
     ]);
 
     if (result.error) {
-      errorBox.textContent =
-        "Login failed: " + result.error.message;
+      errorBox.textContent = "Login failed: " + result.error.message;
       return;
     }
 
     if (!result.data || !result.data.session) {
-      errorBox.textContent = "Login session nahi mili.";
+      errorBox.textContent = "Login session nahi mili. Dobara try karo.";
       return;
     }
-
-    errorBox.textContent = "Login successful! Dashboard khul raha hai...";
 
     document.getElementById("loginPage").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
 
-    loadEnquiries();
-    loadBusBookings();
-    loadSavedBills();
-
-  } catch (err) {
-    console.error("Admin login error:", err);
-    errorBox.textContent =
-      err.message || "Login mein error aaya.";
+    await Promise.allSettled([
+      loadEnquiries(),
+      loadBusBookings(),
+      loadSavedBills()
+    ]);
+  } catch (error) {
+    errorBox.textContent = error.message || "Login mein error aaya.";
   } finally {
     clearTimeout(timeoutId);
+    loginBusy = false;
     button.disabled = false;
     button.textContent = "Login";
   }
 }
 
-/* SHOW DASHBOARD */
-
-function showDashboard(){
-
-  document.getElementById("loginPage").style.display =
-    "none";
-
-  document.getElementById("dashboard").style.display =
-    "block";
-
-  loadEnquiries();
-  loadBusBookings();
-  loadSavedBills();
-}
-
-
-/* LOAD ENQUIRIES */
-/* LOAD SAVED BILLS */
-
-async function loadSavedBills() {
-  const box = document.getElementById("savedBills");
-  if (!box) return;
-
-  box.textContent = "Bills load ho rahe hain...";
-
-  const { data, error } = await supabaseClient
-    .from("travel_bills")
-    .select("*")
-    .order("created_at", { ascending: false });
-
+async function logout() {
+  const { error } = await supabaseClient.auth.signOut();
   if (error) {
-    box.textContent = "Bills load nahi hue: " + error.message;
+    alert("Logout error: " + error.message);
     return;
   }
 
-  if (!data || data.length === 0) {
-    box.textContent = "Abhi koi saved bill nahi hai.";
-    return;
-  }
-
-  box.innerHTML = "";
-
-  data.forEach(function(bill) {
-    const card = document.createElement("div");
-    card.style.cssText =
-      "border:1px solid #ddd;border-radius:10px;padding:14px;margin:10px 0;background:white;color:#222;";
-
-    const heading = document.createElement("h3");
-    heading.textContent = bill.bill_number || "Travel Bill";
-
-    const details = document.createElement("p");
-    details.textContent =
-      "Customer: " + (bill.customer_name || "-") +
-      " | Mobile: " + (bill.customer_phone || "-");
-
-    const route = document.createElement("p");
-    route.textContent =
-      (bill.from_location || "-") + " → " +
-      (bill.to_location || "-") +
-      " | Date: " + (bill.travel_date || "-");
-
-    const amounts = document.createElement("p");
-    amounts.textContent =
-      "Total: ₹" + Number(bill.total_amount || 0).toFixed(2) +
-      " | Advance: ₹" + Number(bill.advance_amount || 0).toFixed(2) +
-      " | Balance: ₹" + Number(bill.balance_amount || 0).toFixed(2);
-const printButton = document.createElement("button");
-printButton.textContent = "Print / Save PDF";
-printButton.style.cssText =
-  "background:#0b7a3e;color:white;padding:10px 14px;border:0;border-radius:6px;cursor:pointer;";
-
-printButton.onclick = function() {
-  const printWindow = window.open("", "_blank");
-
-  if (!printWindow) {
-    alert("Pop-up blocked hai. Browser mein pop-ups allow karo.");
-    return;
-  }
-
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>${bill.bill_number || "Travel Bill"}</title>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 20px; color: #222; }
-        .bill-paper { max-width: 800px; margin: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        @media print { body { padding: 0; } }
-      </style>
-    </head>
-    <body>
-      <h2>${escapeHtml(bill.bill_number || "Travel Bill")}</h2>
-      <p><b>Customer:</b> ${escapeHtml(bill.customer_name || "-")}</p>
-      <p><b>Mobile:</b> ${escapeHtml(bill.customer_phone || "-")}</p>
-      <p><b>Route:</b> ${escapeHtml(bill.from_location || "-")} to ${escapeHtml(bill.to_location || "-")}</p>
-      <p><b>Travel Date:</b> ${escapeHtml(bill.travel_date || "-")}</p>
-      <p><b>Total:</b> ₹${Number(bill.total_amount || 0).toFixed(2)}</p>
-      <p><b>Advance:</b> ₹${Number(bill.advance_amount || 0).toFixed(2)}</p>
-      <p><b>Balance Due:</b> ₹${Number(bill.balance_amount || 0).toFixed(2)}</p>
-    </body>
-    </html>
-  `);
-
-  printWindow.document.close();
-  printWindow.onload = function() {
-    printWindow.print();
-  };
-};
-};
-card.append(heading, details, route, amounts, printButton);
-box.appendChild(card);
-  });
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginPage").style.display = "block";
+  document.getElementById("adminPassword").value = "";
+  document.getElementById("loginError").textContent = "";
 }
-  async function loadEnquiries(){
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+async function loadEnquiries() {
   const box = document.getElementById("enquiries");
-
-  box.innerHTML = "Checking admin session...";
+  box.textContent = "Enquiries load ho rahi hain...";
 
   try {
-
-    const { data: sessionData, error: sessionError } =
-      await supabaseClient.auth.getSession();
-
-    if(sessionError){
-      box.innerHTML =
-        "<p style='color:red;'>Session error: " +
-        sessionError.message +
-        "</p>";
-      return;
-    }
-
-    if(!sessionData.session){
-      box.innerHTML =
-        "<p style='color:red;'>Admin session nahi mili. Please logout karke dobara login karo.</p>";
-      return;
-    }
-
-    box.innerHTML = "Loading enquiries...";
-
-    const queryPromise = supabaseClient
+    const { data, error } = await supabaseClient
       .from("hire_enquiries")
       .select("*")
-      .order("created_at", {
-        ascending: false
-      });
+      .order("created_at", { ascending: false });
 
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => {
-        reject(new Error("Database request 10 seconds se zyada le rahi hai."));
-      }, 10000);
-    });
-
-    const result = await Promise.race([
-      queryPromise,
-      timeoutPromise
-    ]);
-
-    const { data, error } = result;
-
-    if(error){
-      box.innerHTML =
-        "<p style='color:red;'>Database error: " +
-        error.message +
-        "</p>";
-      return;
-    }
+    if (error) throw error;
 
     allEnquiries = data || [];
-
     updateSummary();
-
     displayEnquiries(allEnquiries);
-
-  } catch(error){
-
-    console.error(error);
-
-    box.innerHTML =
-      "<p style='color:red;'>Error: " +
-      error.message +
-      "</p>";
+  } catch (error) {
+    box.textContent = "Enquiries load nahi hui: " + error.message;
   }
 }
 
+function updateSummary() {
+  document.getElementById("totalCount").textContent = allEnquiries.length;
+  document.getElementById("newCount").textContent =
+    allEnquiries.filter(x => !x.status || x.status === "new").length;
+  document.getElementById("contactedCount").textContent =
+    allEnquiries.filter(x => x.status === "contacted").length;
+  document.getElementById("confirmedCount").textContent =
+    allEnquiries.filter(x => x.status === "confirmed").length;
+  document.getElementById("cancelledCount").textContent =
+    allEnquiries.filter(x => x.status === "cancelled").length;
+}
 
-/* LOAD ONLINE BUS BOOKINGS */
-async function loadBusBookings() {
-  const box = document.getElementById("busBookings");
+function displayEnquiries(items) {
+  const box = document.getElementById("enquiries");
 
-  box.innerHTML = "Loading bus bookings...";
-
-  const { data, error } = await supabaseClient
-    .from("bus_bookings")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    box.innerHTML =
-      "<p style='color:red;'>Bookings load nahi hui: " +
-      escapeHtml(error.message) +
-      "</p>";
+  if (!items.length) {
+    box.textContent = "Abhi koi enquiry nahi hai.";
     return;
   }
 
-  if (!data || data.length === 0) {
-    box.innerHTML = "<p>No online bus bookings found.</p>";
-    return;
-  }
+  box.innerHTML = items.map(item => {
+    const status = item.status || "new";
+    const phone = String(item.phone || "").replace(/\D/g, "");
+    const whatsapp = phone.length === 10 ? "91" + phone : phone;
 
-  box.innerHTML = data.map(function(item) {
     return `
       <div class="card">
-        <h3>${escapeHtml(item.passenger_name || "Customer")}</h3>
-        <p><b>From:</b> ${escapeHtml(item.from_location || "")}</p>
-        <p><b>To:</b> ${escapeHtml(item.to_location || "")}</p>
-        <p><b>Travel Date:</b> ${escapeHtml(item.travel_date || "")}</p>
-        <p><b>Bus Type:</b> ${escapeHtml(item.bus_type || "")}</p>
-        <p><b>Seating:</b> ${escapeHtml(item.seating_capacity || "")}</p>
-        <p><b>Passengers:</b> ${escapeHtml(item.passengers ?? "")}</p>
-        <p><b>Journey:</b> ${escapeHtml(item.journey_type || "")}</p>
-        <p><b>Boarding:</b> ${escapeHtml(item.boarding_point || "")}</p>
-        <p><b>Dropping:</b> ${escapeHtml(item.dropping_point || "")}</p>
-        <p><b>Mobile:</b> ${escapeHtml(item.mobile_number || "")}</p>
-        <p><b>WhatsApp:</b> ${escapeHtml(item.whatsapp_number || "")}</p>
-        <p><b>Requirement:</b> ${escapeHtml(item.special_requirement || "None")}</p>
-        <p><b>Status:</b> ${escapeHtml(item.status || "New")}</p>
-        <p><b>Received:</b> ${escapeHtml(item.created_at || "")}</p>
-        <a class="call" href="tel:${escapeHtml(item.mobile_number || "")}">
-          Call Customer
-        </a>
-        <a class="whatsapp"
-           href="https://wa.me/91${String(item.whatsapp_number || "").replace(/\D/g,"").replace(/^91/,"")}"
-           target="_blank" rel="noopener">
-          WhatsApp
-        </a>
+        <h3>${escapeHtml(item.name || "Customer")}</h3>
+        <p><b>Phone:</b> ${escapeHtml(item.phone || "-")}</p>
+        <p><b>Route:</b> ${escapeHtml(item.pickup || "-")} → ${escapeHtml(item.destination || "-")}</p>
+        <p><b>Travel Date:</b> ${escapeHtml(item.hire_date || "-")}</p>
+        <p><b>Bus Type:</b> ${escapeHtml(item.bus_type || "-")}</p>
+        <p><b>Purpose:</b> ${escapeHtml(item.purpose || "-")}</p>
+
+        <label>Status</label>
+        <select id="status-${escapeHtml(item.id)}">
+          ${["new", "contacted", "confirmed", "cancelled"].map(s =>
+            `<option value="${s}" ${status === s ? "selected" : ""}>${s}</option>`
+          ).join("")}
+        </select>
+
+        <div class="actions">
+          <a class="call" href="tel:${escapeHtml(item.phone || "")}">Call</a>
+          <a class="whatsapp" target="_blank" rel="noopener"
+             href="https://wa.me/${whatsapp}">WhatsApp</a>
+          <button class="save" type="button"
+             onclick="updateStatus('${String(item.id).replace(/'/g, "\\'")}')">
+             Save Status
+          </button>
+        </div>
       </div>
     `;
   }).join("");
 }
-/* SUMMARY */
 
-function updateSummary(){
+function filterEnquiries() {
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
 
-  const total =
-    allEnquiries.length;
-
-
-  const newCount =
-    allEnquiries.filter(function(item){
-
-      return !item.status ||
-             item.status === "new";
-
-    }).length;
-
-
-  const contacted =
-    allEnquiries.filter(function(item){
-
-      return item.status === "contacted";
-
-    }).length;
-
-
-  const confirmed =
-    allEnquiries.filter(function(item){
-
-      return item.status === "confirmed";
-
-    }).length;
-
-
-  const cancelled =
-    allEnquiries.filter(function(item){
-
-      return item.status === "cancelled";
-
-    }).length;
-
-
-  document.getElementById("totalCount")
-    .innerText = total;
-
-
-  document.getElementById("newCount")
-    .innerText = newCount;
-
-
-  document.getElementById("contactedCount")
-    .innerText = contacted;
-
-
-  document.getElementById("confirmedCount")
-    .innerText = confirmed;
-
-
-  document.getElementById("cancelledCount")
-    .innerText = cancelled;
-
+  displayEnquiries(allEnquiries.filter(item =>
+    String(item.name || "").toLowerCase().includes(query) ||
+    String(item.phone || "").toLowerCase().includes(query)
+  ));
 }
 
+async function updateStatus(id) {
+  const status = document.getElementById("status-" + id).value;
 
+  const { error } = await supabaseClient
+    .from("hire_enquiries")
+    .update({ status })
+    .eq("id", id);
 
-/* DISPLAY ENQUIRIES */
-
-function displayEnquiries(data){
-
-  const box =
-    document.getElementById("enquiries");
-
-
-  if(!data || data.length === 0){
-
-    box.innerHTML =
-      "<div class='message'>" +
-      "No enquiries found." +
-      "</div>";
-
+  if (error) {
+    alert("Status update nahi hua: " + error.message);
     return;
   }
 
+  alert("Status update ho gaya.");
+  await loadEnquiries();
+}
 
-  box.innerHTML =
-    data.map(function(item){
+async function loadBusBookings() {
+  const box = document.getElementById("busBookings");
+  box.textContent = "Bookings load ho rahi hain...";
 
+  try {
+    const { data, error } = await supabaseClient
+      .from("bus_bookings")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-      let status =
-        item.status || "new";
+    if (error) throw error;
 
+    if (!data || !data.length) {
+      box.textContent = "Abhi koi online bus booking nahi hai.";
+      return;
+    }
 
-      let statusClass =
-        "status-new";
-
-
-      if(status === "contacted"){
-        statusClass =
-          "status-contacted";
-      }
-
-
-      if(status === "confirmed"){
-        statusClass =
-          "status-confirmed";
-      }
-
-
-      if(status === "cancelled"){
-        statusClass =
-          "status-cancelled";
-      }
-
-
-      const phone =
-        String(item.phone || "")
-          .replace(/\D/g,"");
-
-
-      const whatsappNumber =
-        phone.length === 10
-          ? "91" + phone
-          : phone;
-
+    box.innerHTML = data.map(item => {
+      const mobile = String(item.whatsapp_number || item.mobile_number || "")
+        .replace(/\D/g, "");
+      const number = mobile.length === 10 ? "91" + mobile : mobile;
 
       return `
-
         <div class="card">
-
-          <h3>
-            ${escapeHtml(item.name || "Customer")}
-          </h3>
-
-
-          <p>
-            <b>Phone:</b>
-            ${escapeHtml(item.phone || "")}
-          </p>
-
-
-          <p>
-            <b>Route:</b>
-            ${escapeHtml(item.pickup || "")}
-            →
-            ${escapeHtml(item.destination || "")}
-          </p>
-
-
-          <p>
-            <b>Travel Date:</b>
-            ${escapeHtml(item.hire_date || "Not provided")}
-          </p>
-
-
-          <p>
-            <b>Bus Type:</b>
-            ${escapeHtml(item.bus_type || "Not provided")}
-          </p>
-
-
-          <p>
-            <b>Purpose:</b>
-            ${escapeHtml(item.purpose || "Not provided")}
-          </p>
-
-
-          <p>
-
-            <b>Current Status:</b>
-
-            <span class="status ${statusClass}">
-              ${escapeHtml(status)}
-            </span>
-
-          </p>
-
-
-          <select id="status-${item.id}">
-
-            <option value="new"
-              ${status === "new" ? "selected" : ""}>
-              New
-            </option>
-
-            <option value="contacted"
-              ${status === "contacted" ? "selected" : ""}>
-              Contacted
-            </option>
-
-            <option value="confirmed"
-              ${status === "confirmed" ? "selected" : ""}>
-              Confirmed
-            </option>
-
-            <option value="cancelled"
-              ${status === "cancelled" ? "selected" : ""}>
-              Cancelled
-            </option>
-
-          </select>
-
-
-          <div class="actions">
-
-
-            <a
-              class="call"
-              href="tel:${escapeHtml(item.phone || "")}">
-              📞 Call Customer
-            </a>
-
-
-            <a
-              class="whatsapp"
-              href="https://wa.me/${whatsappNumber}"
-              target="_blank">
-              💬 WhatsApp
-            </a>
-
-
-            <button
-              class="save"
-              onclick="updateStatus(${item.id})">
-              🔄 Save Status
-            </button>
-
-
-          </div>
-
-
+          <h3>${escapeHtml(item.passenger_name || "Customer")}</h3>
+          <p><b>From:</b> ${escapeHtml(item.from_location || "-")}</p>
+          <p><b>To:</b> ${escapeHtml(item.to_location || "-")}</p>
+          <p><b>Date:</b> ${escapeHtml(item.travel_date || "-")}</p>
+          <p><b>Bus:</b> ${escapeHtml(item.bus_type || "-")}</p>
+          <p><b>Passengers:</b> ${escapeHtml(item.passengers ?? "-")}</p>
+          <p><b>Mobile:</b> ${escapeHtml(item.mobile_number || "-")}</p>
+          <p><b>Status:</b> ${escapeHtml(item.status || "New")}</p>
+          ${mobile ? `<a class="whatsapp" target="_blank" rel="noopener" href="https://wa.me/${number}">WhatsApp</a>` : ""}
         </div>
-
       `;
-
     }).join("");
-
-}
-
-
-
-/* SEARCH */
-
-function filterEnquiries(){
-
-  const search =
-    document.getElementById("searchInput")
-      .value
-      .toLowerCase()
-      .trim();
-
-
-  if(!search){
-
-    displayEnquiries(
-      allEnquiries
-    );
-
-    return;
+  } catch (error) {
+    box.textContent = "Bookings load nahi hui: " + error.message;
   }
-
-
-  const filtered =
-    allEnquiries.filter(function(item){
-
-      const name =
-        String(item.name || "")
-          .toLowerCase();
-
-
-      const phone =
-        String(item.phone || "")
-          .toLowerCase();
-
-
-      return name.includes(search) ||
-             phone.includes(search);
-
-    });
-
-
-  displayEnquiries(
-    filtered
-  );
-
 }
 
-
-
-/* UPDATE STATUS */
-
-async function updateStatus(id){
-
-  const select =
-    document.getElementById(
-      "status-" + id
-    );
-
-
-  const newStatus =
-    select.value;
-
-
-  const { error } =
-    await supabaseClient
-      .from("hire_enquiries")
-      .update({
-        status:newStatus
-      })
-      .eq("id",id);
-
-
-  if(error){
-
-    console.error(error);
-
-    alert(
-      "Status update nahi hua: " +
-      error.message
-    );
-
-    return;
-  }
-
-
-  alert(
-    "Status successfully update ho gaya."
-  );
-
-
-  loadEnquiries();
-
-}
-
-
-
-/* ESCAPE HTML */
-
-function escapeHtml(value){
-
-  return String(value)
-
-    .replace(/&/g,"&amp;")
-
-    .replace(/</g,"&lt;")
-
-    .replace(/>/g,"&gt;")
-
-    .replace(/"/g,"&quot;")
-
-    .replace(/'/g,"&#039;");
-
-}
-
-
-
-/* LOGOUT */
-
-async function logout(){
-
-  await supabaseClient.auth.signOut();
-
-
-  document.getElementById("dashboard").style.display =
-    "none";
-
-
-  document.getElementById("loginPage").style.display =
-    "block";
-
-
-  document.getElementById("adminEmail").value =
-    "";
-
-
-  document.getElementById("adminPassword").value =
-    "";
-
-}
-// TRAVEL BILL GENERATOR
 function updateBillCalculation() {
-  const km = Math.max(0, Number(document.getElementById("billKm").value) || 0);
-  const rate = Math.max(0, Number(document.getElementById("billRate").value) || 0);
+  const fare = Math.max(0, Number(document.getElementById("billRate").value) || 0);
   const toll = Math.max(0, Number(document.getElementById("billToll").value) || 0);
   const advance = Math.max(0, Number(document.getElementById("billAdvance").value) || 0);
-  const travel = rate;
-  const total = travel + toll;
-  const balance = total - advance;
-  document.getElementById("billTravelAmount").textContent = travel.toFixed(2);
-  document.getElementById("billTotal").textContent = total.toFixed(2);
-  document.getElementById("billBalance").textContent = balance.toFixed(2);
+
+  document.getElementById("billTravelAmount").textContent = fare.toFixed(2);
+  document.getElementById("billTotal").textContent = (fare + toll).toFixed(2);
+  document.getElementById("billBalance").textContent = (fare + toll - advance).toFixed(2);
 }
-["billKm", "billRate", "billToll", "billAdvance"].forEach(function(id) {
+
+["billRate", "billToll", "billAdvance"].forEach(id => {
   document.getElementById(id).addEventListener("input", updateBillCalculation);
 });
+
 document.getElementById("billForm").addEventListener("submit", async function(event) {
   event.preventDefault();
+
+  const message = document.getElementById("billMessage");
+  const saveButton = document.getElementById("saveBillButton");
+  if (saveButton.disabled) return;
+
   const km = Number(document.getElementById("billKm").value) || 0;
-  const rate = Number(document.getElementById("billRate").value) || 0;
+  const fare = Number(document.getElementById("billRate").value) || 0;
   const toll = Number(document.getElementById("billToll").value) || 0;
   const advance = Number(document.getElementById("billAdvance").value) || 0;
-  const total = rate + toll;
+  const total = fare + toll;
   const balance = total - advance;
-  const bill = {
-    bill_number: null,
-    customer_name: document.getElementById("billName").value.trim(),
-    customer_phone: document.getElementById("billPhone").value.trim(),
-    bus_type: document.getElementById("billBus").value.trim(),
-    from_location: document.getElementById("billFrom").value.trim(),
-    to_location: document.getElementById("billTo").value.trim(),
-    travel_date: document.getElementById("billDate").value,
-    total_km: km,
-    rate_per_km: 0,
-    toll_parking: toll,
-    total_amount: total,
-    advance_amount: advance,
-    balance_amount: balance,
-    notes: document.getElementById("billNotes").value.trim()
-  };
-  const message = document.getElementById("billMessage");
+
+  if (advance > total) {
+    message.textContent = "Advance total bill se zyada nahi ho sakta.";
+    return;
+  }
+
+  saveButton.disabled = true;
   message.textContent = "Bill save ho raha hai...";
-  const { data, error } = await supabaseClient
-    .from("travel_bills")
-    .insert([bill])
-    .select()
-    .single();
-  if (error) {
+
+  try {
+    const bill = {
+      customer_name: document.getElementById("billName").value.trim(),
+      customer_phone: document.getElementById("billPhone").value.trim(),
+      bus_type: document.getElementById("billBus").value.trim(),
+      from_location: document.getElementById("billFrom").value.trim(),
+      to_location: document.getElementById("billTo").value.trim(),
+      travel_date: document.getElementById("billDate").value,
+      total_km: km,
+      rate_per_km: 0,
+      toll_parking: toll,
+      total_amount: total,
+      advance_amount: advance,
+      balance_amount: balance,
+      notes: document.getElementById("billNotes").value.trim()
+    };
+
+    const { data, error } = await supabaseClient
+      .from("travel_bills")
+      .insert([bill])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    message.textContent = "Bill save ho gaya! Bill No: " + (data.bill_number || "Saved");
+
+    const brand = document.getElementById("billBrand").value;
+    const customer = data.customer_name || "";
+    const phone = data.customer_phone || "";
+    const from = data.from_location || "";
+    const to = data.to_location || "";
+    const date = data.travel_date || "";
+    const notes = data.notes || "-";
+    const billNo = data.bill_number || "";
+
+    document.getElementById("billPreview").innerHTML = `
+      <div class="bill-paper" id="printableBill">
+        <div class="bill-heading">
+          <h1>${escapeHtml(brand)}</h1>
+          <p>BUS HIRE • BUS BOOKING • TOURS & TRAVELS</p>
+          <p>Ghaziabad, Uttar Pradesh</p>
+        </div>
+
+        <div class="bill-title">TRAVEL BILL / INVOICE</div>
+
+        <div class="bill-details">
+          <div><b>Bill No.:</b> ${escapeHtml(billNo || "-")}</div>
+          <div><b>Bill Date:</b> ${escapeHtml(new Date().toLocaleDateString("en-IN"))}</div>
+          <div><b>Customer:</b> ${escapeHtml(customer)}</div>
+          <div><b>Mobile:</b> ${escapeHtml(phone || "-")}</div>
+          <div><b>Bus Type:</b> ${escapeHtml(data.bus_type || "-")}</div>
+          <div><b>Travel Date:</b> ${escapeHtml(date || "-")}</div>
+          <div><b>From:</b> ${escapeHtml(from)}</div>
+          <div><b>To:</b> ${escapeHtml(to)}</div>
+          <div><b>Total KM:</b> ${km.toFixed(2)} KM</div>
+        </div>
+
+        <table class="bill-table">
+          <thead>
+            <tr><th>Description</th><th>Quantity</th><th>Amount</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Agreed Bus Fare</td><td>Fixed fare</td><td>₹${fare.toFixed(2)}</td></tr>
+            <tr><td>Toll / Parking</td><td>As incurred</td><td>₹${toll.toFixed(2)}</td></tr>
+          </tbody>
+        </table>
+
+        <table class="bill-total">
+          <tr><td>Agreed Bus Fare</td><td>₹${fare.toFixed(2)}</td></tr>
+          <tr><td>Toll / Parking</td><td>₹${toll.toFixed(2)}</td></tr>
+          <tr><td><b>Total Bill</b></td><td><b>₹${total.toFixed(2)}</b></td></tr>
+          <tr><td>Advance Received</td><td>₹${advance.toFixed(2)}</td></tr>
+          <tr><td><b>Balance Due</b></td><td><b>₹${balance.toFixed(2)}</b></td></tr>
+        </table>
+
+        <p><b>Notes:</b> ${escapeHtml(notes)}</p>
+        <p style="text-align:center;margin-top:25px;">Thank you for choosing ${escapeHtml(brand)}!</p>
+        <div class="bill-footer">
+          <div>Customer Signature: ______________</div>
+          <div>Authorized Signature: ______________</div>
+        </div>
+      </div>
+
+      <div class="bill-actions no-print">
+        <button type="button" onclick="window.print()">Print / Save PDF</button>
+        <button type="button" onclick="shareBillWhatsApp()">Send WhatsApp Bill Details</button>
+      </div>
+    `;
+
+    await loadSavedBills();
+  } catch (error) {
     message.textContent = "Bill save nahi hua: " + error.message;
-    return;
+  } finally {
+    saveButton.disabled = false;
   }
-  message.textContent = "Bill successfully save ho gaya! Bill No: " + data.bill_number;
-  document.getElementById("billPreview").innerHTML = `
-  <div class="bill-paper" id="printableBill">
-
-    <div class="bill-heading">
-      <h1>${escapeHtml(document.getElementById("billBrand").value)}</h1>
-      <p>BUS HIRE • BUS BOOKING • TOURS & TRAVELS</p>
-      <p>Ghaziabad, Uttar Pradesh</p>
-    </div>
-
-    <div class="bill-title">TRAVEL BILL / INVOICE</div>
-
-    <div class="bill-details">
-      <div><b>Bill No.:</b> ${escapeHtml(data.bill_number)}</div>
-      <div><b>Bill Date:</b> ${escapeHtml(new Date().toLocaleDateString("en-IN"))}</div>
-      <div><b>Customer Name:</b> ${escapeHtml(data.customer_name)}</div>
-      <div><b>Mobile:</b> ${escapeHtml(data.customer_phone || "-")}</div>
-      <div><b>Bus Type:</b> ${escapeHtml(data.bus_type || "-")}</div>
-      <div><b>Travel Date:</b> ${escapeHtml(data.travel_date || "-")}</div>
-      <div><b>From:</b> ${escapeHtml(data.from_location)}</div>
-      <div><b>To:</b> ${escapeHtml(data.to_location)}</div>
-    </div>
-
-    <table class="bill-table">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Quantity</th>
-          <th>Rate</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Bus Travel</td>
-          <td>${km.toFixed(2)} KM</td>
-          <td>₹${rate.toFixed(2)} / KM</td>
-          <td>₹${(km * rate).toFixed(2)}</td>
-        </tr>
-        <tr>
-          <td>Toll / Parking</td>
-          <td>As incurred</td>
-          <td>-</td>
-          <td>₹${toll.toFixed(2)}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table class="bill-total">
-      <tr>
-        <td>Travel Amount</td>
-        <td>₹${(km * rate).toFixed(2)}</td>
-      </tr>
-      <tr>
-        <td>Toll / Parking</td>
-        <td>₹${toll.toFixed(2)}</td>
-      </tr>
-      <tr>
-        <td><b>Total Bill</b></td>
-        <td><b>₹${total.toFixed(2)}</b></td>
-      </tr>
-      <tr>
-        <td>Advance Received</td>
-        <td>₹${advance.toFixed(2)}</td>
-      </tr>
-      <tr>
-        <td><b>Balance Due</b></td>
-        <td><b>₹${balance.toFixed(2)}</b></td>
-      </tr>
-    </table>
-
-    <p><b>Notes:</b> ${escapeHtml(data.notes || "-")}</p>
-    <p style="text-align:center;margin-top:25px;">
-      Thank you for choosing Sagar Travels!
-    </p>
-
-    <div class="bill-footer">
-      <div>Customer Signature: ______________</div>
-      <div>Authorized Signature: ______________</div>
-    </div>
-
-  </div>
-
-  <div class="bill-actions no-print">
-    <button type="button" onclick="window.print()">
-      Print / Save PDF
-    </button>
-    <button type="button"
-      onclick="shareBillWhatsApp(
-        '${encodeURIComponent(data.customer_phone || "")}',
-        '${encodeURIComponent("SAGAR TRAVELS - Travel Bill\\nBill No: " + data.bill_number + "\\nCustomer: " + data.customer_name + "\\nRoute: " + data.from_location + " to " + data.to_location + "\\nTotal: ₹" + total.toFixed(2) + "\\nAdvance: ₹" + advance.toFixed(2) + "\\nBalance Due: ₹" + balance.toFixed(2))}'
-      )">
-      Send WhatsApp Bill Details
-    </button>
-  </div>
-`;
-  loadSavedBills();
 });
-function shareBillWhatsApp(phoneEncoded, textEncoded) {
-  const phone = decodeURIComponent(phoneEncoded).replace(/\D/g, "");
-  const text = decodeURIComponent(textEncoded);
 
+function shareBillWhatsApp() {
+  const phone = document.getElementById("billPhone").value.trim().replace(/\D/g, "");
   if (!phone) {
-    alert("Customer ka mobile number pehle enter karo.");
+    alert("Customer ka mobile number enter karo.");
     return;
   }
 
-  const indianNumber = phone.startsWith("91")
-    ? phone
-    : "91" + phone;
+  const brand = document.getElementById("billBrand").value;
+  const fare = Number(document.getElementById("billRate").value) || 0;
+  const toll = Number(document.getElementById("billToll").value) || 0;
+  const advance = Number(document.getElementById("billAdvance").value) || 0;
+  const total = fare + toll;
+  const balance = total - advance;
 
-  const url =
-    "https://wa.me/" + indianNumber +
-    "?text=" + encodeURIComponent(text);
+  const text =
+    brand + " - Travel Bill\n" +
+    "Customer: " + document.getElementById("billName").value + "\n" +
+    "Route: " + document.getElementById("billFrom").value + " to " +
+    document.getElementById("billTo").value + "\n" +
+    "Total KM: " + document.getElementById("billKm").value + "\n" +
+    "Agreed Bus Fare: ₹" + fare.toFixed(2) + "\n" +
+    "Toll/Parking: ₹" + toll.toFixed(2) + "\n" +
+    "Total: ₹" + total.toFixed(2) + "\n" +
+    "Advance: ₹" + advance.toFixed(2) + "\n" +
+    "Balance Due: ₹" + balance.toFixed(2);
 
-  window.open(url, "_blank");
+  const number = phone.startsWith("91") ? phone : "91" + phone;
+  window.open("https://wa.me/" + number + "?text=" + encodeURIComponent(text), "_blank");
 }
+
 async function loadSavedBills() {
-  const area = document.getElementById("savedBills");
-  const { data, error } = await supabaseClient
-    .from("travel_bills")
-    .select("*")
-    .order("created_at", { ascending: false });
-  if (error) {
-    area.textContent = "Bills load nahi hue: " + error.message;
-    return;
+  const box = document.getElementById("savedBills");
+  box.textContent = "Saved bills load ho rahe hain...";
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("travel_bills")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!data || !data.length) {
+      box.textContent = "Abhi koi saved bill nahi hai.";
+      return;
+    }
+
+    box.innerHTML = data.map(bill => `
+      <div class="card">
+        <h3>${escapeHtml(bill.bill_number || "Travel Bill")}</h3>
+        <p><b>Customer:</b> ${escapeHtml(bill.customer_name || "-")}</p>
+        <p><b>Route:</b> ${escapeHtml(bill.from_location || "-")} → ${escapeHtml(bill.to_location || "-")}</p>
+        <p><b>Date:</b> ${escapeHtml(bill.travel_date || "-")}</p>
+        <p><b>Total:</b> ₹${Number(bill.total_amount || 0).toFixed(2)}
+           | <b>Advance:</b> ₹${Number(bill.advance_amount || 0).toFixed(2)}
+           | <b>Balance:</b> ₹${Number(bill.balance_amount || 0).toFixed(2)}</p>
+      </div>
+    `).join("");
+  } catch (error) {
+    box.textContent = "Saved bills load nahi hue: " + error.message;
   }
-  if (!data || data.length === 0) {
-    area.textContent = "Abhi koi bill save nahi hua.";
-    return;
-  }
-  area.innerHTML = data.map(function(b) {
-    return `<div class="card">
-      <b>${escapeHtml(b.bill_number)}</b> — ${escapeHtml(b.customer_name)}
-      <p>${escapeHtml(b.from_location)} to ${escapeHtml(b.to_location)}</p>
-      <p>Total: ₹${Number(b.total_amount).toFixed(2)} | Balance: ₹${Number(b.balance_amount).toFixed(2)}</p>
-    </div>`;
-  }).join("");
 }
+
 updateBillCalculation();
+
 </script>
-
 </body>
-
 </html>
