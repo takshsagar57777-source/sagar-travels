@@ -710,9 +710,53 @@ async function loadSavedBills() {
       "Total: ₹" + Number(bill.total_amount || 0).toFixed(2) +
       " | Advance: ₹" + Number(bill.advance_amount || 0).toFixed(2) +
       " | Balance: ₹" + Number(bill.balance_amount || 0).toFixed(2);
+const printButton = document.createElement("button");
+printButton.textContent = "Print / Save PDF";
+printButton.style.cssText =
+  "background:#0b7a3e;color:white;padding:10px 14px;border:0;border-radius:6px;cursor:pointer;";
 
-    card.append(heading, details, route, amounts);
-    box.appendChild(card);
+printButton.onclick = function() {
+  const printWindow = window.open("", "_blank");
+
+  if (!printWindow) {
+    alert("Pop-up blocked hai. Browser mein pop-ups allow karo.");
+    return;
+  }
+
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>${bill.bill_number || "Travel Bill"}</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 20px; color: #222; }
+        .bill-paper { max-width: 800px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        @media print { body { padding: 0; } }
+      </style>
+    </head>
+    <body>
+      <h2>${escapeHtml(bill.bill_number || "Travel Bill")}</h2>
+      <p><b>Customer:</b> ${escapeHtml(bill.customer_name || "-")}</p>
+      <p><b>Mobile:</b> ${escapeHtml(bill.customer_phone || "-")}</p>
+      <p><b>Route:</b> ${escapeHtml(bill.from_location || "-")} to ${escapeHtml(bill.to_location || "-")}</p>
+      <p><b>Travel Date:</b> ${escapeHtml(bill.travel_date || "-")}</p>
+      <p><b>Total:</b> ₹${Number(bill.total_amount || 0).toFixed(2)}</p>
+      <p><b>Advance:</b> ₹${Number(bill.advance_amount || 0).toFixed(2)}</p>
+      <p><b>Balance Due:</b> ₹${Number(bill.balance_amount || 0).toFixed(2)}</p>
+    </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.onload = function() {
+    printWindow.print();
+  };
+};
+};
+card.append(heading, details, route, amounts, printButton);
+box.appendChild(card);
   });
 }
   async function loadEnquiries(){
