@@ -1362,7 +1362,7 @@ document.getElementById("billForm").addEventListener("submit", async function(ev
         '${encodeURIComponent(data.customer_phone || "")}',
         '${encodeURIComponent("SAGAR TRAVELS - Travel Bill\\nBill No: " + data.bill_number + "\\nCustomer: " + data.customer_name + "\\nRoute: " + data.from_location + " to " + data.to_location + "\\nTotal: ₹" + total.toFixed(2) + "\\nAdvance: ₹" + advance.toFixed(2) + "\\nBalance Due: ₹" + balance.toFixed(2))}'
       )">
-      WhatsApp Bill Details
+      Send WhatsApp Bill Details
     </button>
   </div>
 `;
@@ -1371,7 +1371,21 @@ document.getElementById("billForm").addEventListener("submit", async function(ev
 function shareBillWhatsApp(phoneEncoded, textEncoded) {
   const phone = decodeURIComponent(phoneEncoded).replace(/\D/g, "");
   const text = decodeURIComponent(textEncoded);
-  window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(text), "_blank");
+
+  if (!phone) {
+    alert("Customer ka mobile number pehle enter karo.");
+    return;
+  }
+
+  const indianNumber = phone.startsWith("91")
+    ? phone
+    : "91" + phone;
+
+  const url =
+    "https://wa.me/" + indianNumber +
+    "?text=" + encodeURIComponent(text);
+
+  window.open(url, "_blank");
 }
 async function loadSavedBills() {
   const area = document.getElementById("savedBills");
