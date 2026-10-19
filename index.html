@@ -1162,6 +1162,195 @@ footer p {
     font-size: 12px !important;
   }
 }
+  /* ===== CLEAN PROFESSIONAL CONTACT DESIGN ===== */
+#contact {
+  padding: 54px 20px !important;
+  background: #f4f6fa !important;
+  color: #17253b !important;
+}
+
+#contact .contact-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+#contact .contact-heading {
+  text-align: center;
+  margin: 0 auto 28px;
+}
+
+#contact .contact-eyebrow {
+  color: #9a752e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+#contact .contact-heading h2 {
+  color: #102443 !important;
+  font-size: clamp(27px, 4vw, 36px) !important;
+  margin: 8px 0 !important;
+}
+
+#contact .contact-heading p,
+#contact .contact-subtitle {
+  color: #68758a !important;
+  font-size: 14px !important;
+  margin: 5px 0 16px !important;
+}
+
+#contact .contact-layout {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+#contact .contact-panel {
+  background: #ffffff !important;
+  color: #17253b !important;
+  padding: 25px !important;
+  border: 1px solid #e1e6ee !important;
+  border-radius: 14px !important;
+  box-shadow: 0 5px 20px rgba(20, 39, 66, .05) !important;
+  min-width: 0;
+}
+
+#contact .contact-panel h3 {
+  color: #102443 !important;
+  font-size: 18px !important;
+  margin: 0 0 5px !important;
+}
+
+#contact .contact-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 0 !important;
+  margin: 0 !important;
+  border-bottom: 1px solid #edf0f5 !important;
+  background: transparent !important;
+  color: #17253b !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+#contact .contact-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf2f8;
+  color: #17395f;
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+#contact .contact-detail {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#contact .contact-detail small {
+  color: #738096 !important;
+  font-size: 11px !important;
+}
+
+#contact .contact-detail strong {
+  color: #17253b !important;
+  font-size: 14px !important;
+  overflow-wrap: anywhere;
+}
+
+#contact .contact-action {
+  color: #244d7a !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  white-space: nowrap;
+}
+
+#contact .contact-divider {
+  height: 1px;
+  background: #e7ebf1;
+  margin: 20px 0;
+}
+
+#contact .whatsapp-links {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+}
+
+#contact .whatsapp-links a {
+  display: inline-flex !important;
+  padding: 8px 11px !important;
+  margin: 0 !important;
+  background: #edf7f0 !important;
+  color: #17663a !important;
+  border: 1px solid #d5eadc !important;
+  border-radius: 7px !important;
+  text-decoration: none !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+#contact .address-icon {
+  margin-bottom: 15px;
+}
+
+#contact .address-panel address {
+  color: #43516a !important;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1.9;
+  margin: 20px 0;
+}
+
+#contact .directions-link {
+  display: inline-block;
+  padding: 10px 14px;
+  color: #ffffff !important;
+  background: #17395f !important;
+  border-radius: 7px;
+  text-decoration: none !important;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#contact .office-note {
+  color: #68758a;
+  border-top: 1px solid #edf0f5;
+  margin-top: 22px;
+  padding-top: 16px;
+  font-size: 13px;
+}
+
+@media (max-width: 700px) {
+  #contact {
+    padding: 38px 14px !important;
+  }
+
+  #contact .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  #contact .contact-panel {
+    padding: 18px !important;
+  }
+
+  #contact .contact-heading {
+    margin-bottom: 22px;
+  }
+}
 </style>
 </head>
 
@@ -1435,58 +1624,80 @@ footer p {
 
 
 <section class="contact" id="contact">
+  <div class="contact-inner">
 
-  <h2>Contact Sagar Travels</h2>
+    <div class="contact-heading">
+      <span class="contact-eyebrow">WE ARE HERE TO HELP</span>
+      <h2>Contact Sagar Travels</h2>
+      <p>Bus Booking, Bus Hire & All-India Tours</p>
+    </div>
 
-  <p>📞 Call us for Bus Booking & Bus Hire</p>
-  <div class="contact-numbers">
-  <h3>Contact Sagar Travels</h3>
-  <p>📞 <a href="tel:+919718557777">+91 97185 57777</a></p>
-  <p>📞 <a href="tel:+919582037777">+91 95820 37777</a></p>
-  <p>📞 <a href="tel:+919910627763">+91 99106 27763</a></p>
-</div>
-  <div class="whatsapp-contacts">
-  <h3>💬 Chat With Us on WhatsApp</h3>
+    <div class="contact-layout">
 
-  <p>
-    <a href="https://wa.me/919718557777" target="_blank" rel="noopener noreferrer">
-      WhatsApp: +91 97185 57777
-    </a>
-  </p>
+      <div class="contact-panel">
+        <h3>Call for Booking</h3>
+        <p class="contact-subtitle">Talk to our team directly</p>
 
-  <p>
-    <a href="https://wa.me/919582037777" target="_blank" rel="noopener noreferrer">
-      WhatsApp: +91 95820 37777
-    </a>
-  </p>
+        <a class="contact-row" href="tel:+919718557777">
+          <span class="contact-icon">☎</span>
+          <span class="contact-detail">
+            <small>Booking Enquiries</small>
+            <strong>+91 97185 57777</strong>
+          </span>
+          <span class="contact-action">Call ↗</span>
+        </a>
 
-  <p>
-    <a href="https://wa.me/919910627763" target="_blank" rel="noopener noreferrer">
-      WhatsApp: +91 99106 27763
-    </a>
-  </p>
-</div>
+        <a class="contact-row" href="tel:+919582037777">
+          <span class="contact-icon">☎</span>
+          <span class="contact-detail">
+            <small>Bus Hire & Tours</small>
+            <strong>+91 95820 37777</strong>
+          </span>
+          <span class="contact-action">Call ↗</span>
+        </a>
 
-  <div class="contact-address" style="display:block !important; visibility:visible !important; opacity:1 !important; color:#17253b !important; background:#ffffff !important; border:2px solid #d9ad55 !important; padding:22px !important; margin:20px auto !important; border-radius:16px !important; line-height:1.8 !important; width:100% !important; box-sizing:border-box !important;">
-  <h3 style="color:#102443 !important;">📍 Our Office Address</h3>
-<p style="color:#35445b !important;">
-  Office No-184-A, Denagarhi Market,<br>
-  Near Old Bus Stand, Hapur Road,<br>
-  Ghaziabad, Uttar Pradesh - 201001
-</p>
-  <a
-    href="https://www.google.com/maps/search/?api=1&query=Office+No-184-A+Denagarhi+Market+Near+Old+Bus+Stand+Hapur+Road+Ghaziabad+Uttar+Pradesh+201001"
-    target="_blank"
-    rel="noopener noreferrer"
-    style="color:#ffb300 !important;">
-    Get Directions
-  </a>
-</div>
+        <a class="contact-row" href="tel:+919910627763">
+          <span class="contact-icon">☎</span>
+          <span class="contact-detail">
+            <small>Customer Support</small>
+            <strong>+91 99106 27763</strong>
+          </span>
+          <span class="contact-action">Call ↗</span>
+        </a>
 
-  <p>🚌 Serving Routes Across India</p>
+        <div class="contact-divider"></div>
 
+        <h3>Chat on WhatsApp</h3>
+        <div class="whatsapp-links">
+          <a href="https://wa.me/919718557777" target="_blank" rel="noopener noreferrer">WhatsApp 1 ↗</a>
+          <a href="https://wa.me/919582037777" target="_blank" rel="noopener noreferrer">WhatsApp 2 ↗</a>
+          <a href="https://wa.me/919910627763" target="_blank" rel="noopener noreferrer">WhatsApp 3 ↗</a>
+        </div>
+      </div>
+
+      <div class="contact-panel address-panel">
+        <span class="contact-icon address-icon">⌖</span>
+        <h3>Visit Our Office</h3>
+        <p class="contact-subtitle">We look forward to assisting you</p>
+
+        <address>
+          Office No-184-A, Denagarhi Market,<br>
+          Near Old Bus Stand, Hapur Road,<br>
+          Ghaziabad, Uttar Pradesh - 201001
+        </address>
+
+        <a class="directions-link"
+           href="https://www.google.com/maps/search/?api=1&amp;query=Office+No-184-A+Denagarhi+Market+Near+Old+Bus+Stand+Hapur+Road+Ghaziabad+Uttar+Pradesh+201001"
+           target="_blank" rel="noopener noreferrer">
+          Get Directions ↗
+        </a>
+
+        <div class="office-note">🚌 Serving routes across India</div>
+      </div>
+
+    </div>
+  </div>
 </section>
-
 
 <footer>
 
