@@ -608,6 +608,137 @@ footer {
     z-index: 9999;
   }
 }
+  /* ===== PREMIUM HOMEPAGE HERO ===== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 78px 5% 85px !important;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(217,173,85,.18), transparent 55%),
+    linear-gradient(135deg, #07172e 0%, #102b50 55%, #174c78 100%) !important;
+  color: #ffffff !important;
+}
+
+.hero h1 {
+  max-width: 850px;
+  margin: 0 auto 18px !important;
+  font-size: clamp(32px, 5vw, 56px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -1px;
+  font-weight: 800;
+  color: #ffffff !important;
+  text-shadow: 0 4px 18px rgba(0,0,0,.2);
+}
+
+.hero p {
+  max-width: 700px;
+  margin: 0 auto 34px !important;
+  font-size: clamp(16px, 2vw, 21px) !important;
+  line-height: 1.7;
+  color: #e4ebf5 !important;
+}
+
+.booking-box {
+  width: 100%;
+  max-width: 1080px !important;
+  margin: 0 auto !important;
+  padding: 28px !important;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 15px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(217,173,85,.65);
+  border-radius: 22px !important;
+  box-shadow: 0 22px 55px rgba(0,0,0,.25) !important;
+  text-align: left;
+}
+
+.booking-box input,
+.booking-box select {
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  background: #f8fafc !important;
+  color: #17253b !important;
+  border: 1px solid #dce3ed !important;
+  border-radius: 11px !important;
+  padding: 13px !important;
+  font-size: 15px !important;
+}
+
+.booking-box input:focus,
+.booking-box select:focus {
+  outline: 2px solid rgba(217,173,85,.5);
+  border-color: #c69538 !important;
+}
+
+.booking-box .full {
+  grid-column: 1 / -1;
+}
+
+.booking-box button {
+  min-height: 54px;
+  font-size: 17px !important;
+  letter-spacing: .2px;
+  background: linear-gradient(135deg, #f5d995, #c69538) !important;
+  border-radius: 12px !important;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    padding: 48px 16px 55px !important;
+  }
+
+  .hero h1 {
+    font-size: 35px !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero p {
+    font-size: 16px !important;
+    margin-bottom: 25px !important;
+  }
+
+  .booking-box {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    padding: 18px !important;
+    gap: 12px !important;
+    border-radius: 18px !important;
+  }
+
+  .booking-box input,
+  .booking-box select {
+    font-size: 14px !important;
+    padding: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 38px 13px 42px !important;
+  }
+
+  .hero h1 {
+    font-size: 31px !important;
+  }
+
+  .booking-box {
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+
+  .booking-box .full {
+    grid-column: auto;
+  }
+
+  .booking-box input,
+  .booking-box select {
+    min-height: 48px;
+    font-size: 15px !important;
+  }
+}
 </style>
 </head>
 
