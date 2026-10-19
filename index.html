@@ -497,6 +497,117 @@ footer {
     max-width: 100%;
   }
 }
+  /* ===== MOBILE CONTACT AND LAYOUT FIX ===== */
+
+/* Contact cards: readable dark text on white */
+.contact-numbers,
+.contact-address,
+.whatsapp-contacts,
+.google-reviews {
+  background: #ffffff !important;
+  color: #17253b !important;
+  border: 1px solid #e1c276 !important;
+  border-radius: 18px !important;
+  padding: 22px !important;
+  margin: 18px auto !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+.contact-numbers h3,
+.contact-address h3,
+.whatsapp-contacts h3,
+.google-reviews h3 {
+  color: #102443 !important;
+  line-height: 1.35;
+}
+
+.contact-numbers p,
+.contact-address p,
+.whatsapp-contacts p,
+.google-reviews p {
+  color: #35445b !important;
+  line-height: 1.8;
+}
+
+.contact-numbers a,
+.contact-address a,
+.whatsapp-contacts a,
+.google-reviews a {
+  color: #123e70 !important;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Keep the WhatsApp links green */
+.whatsapp-contacts a {
+  color: #16834b !important;
+}
+
+/* Mobile spacing and navigation */
+@media (max-width: 600px) {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px 13px !important;
+    padding: 14px 10px !important;
+  }
+
+  nav a {
+    font-size: 13px !important;
+    line-height: 1.5;
+    white-space: normal;
+  }
+
+  section {
+    padding: 36px 16px !important;
+  }
+
+  .contact-numbers,
+  .contact-address,
+  .whatsapp-contacts,
+  .google-reviews {
+    width: 100%;
+    padding: 18px !important;
+  }
+
+  .contact-numbers a,
+  .whatsapp-contacts a {
+    font-size: 16px;
+  }
+
+  .bus-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .bus-gallery img {
+    width: 100%;
+    height: 155px !important;
+    object-fit: cover;
+  }
+
+  /* Smaller floating WhatsApp button */
+  body > a[href*="wa.me"] {
+    bottom: 14px !important;
+    right: 12px !important;
+    padding: 10px 13px !important;
+    font-size: 13px !important;
+    max-width: calc(100vw - 24px);
+    z-index: 9999;
+  }
+}
 </style>
 </head>
 
