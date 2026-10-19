@@ -1493,6 +1493,32 @@ footer p {
     font-size: 13px !important;
   }
 }
+  #contact .contact-phone-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 10px 16px !important;
+  margin: 14px 0 !important;
+}
+
+#contact .contact-phone-list a {
+  display: inline-block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #17395f !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+#contact .contact-phone-list a:hover {
+  color: #98712e !important;
+  text-decoration: underline !important;
+}
 </style>
 </head>
 
@@ -1777,37 +1803,16 @@ footer p {
     <div class="contact-layout">
 
       <div class="contact-panel">
-        <h3>Call for Booking</h3>
-        <p class="contact-subtitle">Talk to our team directly</p>
+<div class="contact-panel">
+  <h3>Contact Numbers</h3>
 
-        <a class="contact-row" href="tel:+919718557777">
-          <span class="contact-icon">☎</span>
-          <span class="contact-detail">
-            <small>Booking Enquiries</small>
-            <strong>+91 97185 57777</strong>
-          </span>
-          <span class="contact-action">Call ↗</span>
-        </a>
+  <div class="contact-phone-list">
+    <a href="tel:+919718557777">+91 97185 57777</a>
+    <a href="tel:+919582037777">+91 95820 37777</a>
+    <a href="tel:+919910627763">+91 99106 27763</a>
+  </div>
 
-        <a class="contact-row" href="tel:+919582037777">
-          <span class="contact-icon">☎</span>
-          <span class="contact-detail">
-            <small>Bus Hire & Tours</small>
-            <strong>+91 95820 37777</strong>
-          </span>
-          <span class="contact-action">Call ↗</span>
-        </a>
-
-        <a class="contact-row" href="tel:+919910627763">
-          <span class="contact-icon">☎</span>
-          <span class="contact-detail">
-            <small>Customer Support</small>
-            <strong>+91 99106 27763</strong>
-          </span>
-          <span class="contact-action">Call ↗</span>
-        </a>
-
-        <div class="contact-divider"></div>
+  <div class="contact-divider"></div>
 
         <h3>Chat on WhatsApp</h3>
         <div class="whatsapp-links">
