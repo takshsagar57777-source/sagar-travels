@@ -1908,6 +1908,41 @@ footer p {
     padding: 18px !important;
   }
 }
+  /* ===== FLOATING WHATSAPP BUTTON ===== */
+body > a[href*="wa.me"] {
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 18px !important;
+  z-index: 9999 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 12px 18px !important;
+  max-width: calc(100vw - 30px) !important;
+  background: #159b61 !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 30px !important;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .2) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+
+body > a[href*="wa.me"]:hover {
+  background: #087747 !important;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  body > a[href*="wa.me"] {
+    right: 12px !important;
+    bottom: 12px !important;
+    padding: 10px 14px !important;
+    font-size: 12px !important;
+  }
+}
 </style>
 </head>
 
