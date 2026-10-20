@@ -1750,6 +1750,128 @@ footer p {
     font-size: 11px !important;
   }
 }
+  /* ===== CONTACT SECTION: STRONGER COLOURS + LESS EMPTY SPACE ===== */
+#contact {
+  background: linear-gradient(135deg, #e8f1fc, #f9fbff) !important;
+  padding: 38px 18px !important;
+  color: #102b50 !important;
+}
+
+#contact .contact-heading {
+  margin-bottom: 22px !important;
+}
+
+#contact .contact-heading h2 {
+  color: #102b50 !important;
+  font-size: clamp(28px, 4vw, 40px) !important;
+}
+
+#contact .contact-heading p {
+  color: #405a7a !important;
+}
+
+#contact .contact-layout {
+  max-width: 1120px !important;
+  margin: auto !important;
+  gap: 16px !important;
+  grid-template-columns: 1.2fr .9fr !important;
+}
+
+#contact .contact-panel {
+  background: #ffffff !important;
+  border: 1px solid #d3e1f2 !important;
+  border-radius: 15px !important;
+  padding: 22px !important;
+  box-shadow: 0 8px 24px rgba(16, 43, 80, .09) !important;
+}
+
+#contact .contact-panel h3 {
+  color: #10366b !important;
+  font-size: 20px !important;
+}
+
+#contact .contact-subtitle {
+  color: #526a88 !important;
+}
+
+/* Phone numbers */
+#contact .contact-phone-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px 18px !important;
+  margin: 18px 0 !important;
+}
+
+#contact .contact-phone-list a {
+  color: #103f85 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  border-bottom: 2px solid #edb83f !important;
+  padding-bottom: 6px !important;
+}
+
+/* WhatsApp buttons */
+#contact .whatsapp-links a {
+  background: #159b61 !important;
+  border: 1px solid #159b61 !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+}
+
+#contact .whatsapp-links a:hover {
+  background: #087747 !important;
+}
+
+/* Office address */
+#contact .address-panel {
+  background: linear-gradient(145deg, #ffffff, #fff9e9) !important;
+  border: 1px solid #e9d6a7 !important;
+}
+
+#contact .address-panel h3 {
+  color: #10366b !important;
+}
+
+#contact .address-panel address {
+  color: #344c6c !important;
+  font-size: 14px !important;
+  line-height: 1.85 !important;
+}
+
+#contact .directions-link {
+  background: #f0b83f !important;
+  color: #102b50 !important;
+  padding: 11px 17px !important;
+  border-radius: 8px !important;
+  font-weight: 800 !important;
+}
+
+#contact .office-note {
+  color: #10366b !important;
+  font-weight: 750 !important;
+}
+
+/* Smaller screens */
+@media (max-width: 700px) {
+  #contact {
+    padding: 30px 12px !important;
+  }
+
+  #contact .contact-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  #contact .contact-panel {
+    padding: 17px !important;
+  }
+
+  #contact .contact-phone-list {
+    gap: 10px 14px !important;
+  }
+}
 </style>
 </head>
 
