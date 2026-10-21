@@ -823,7 +823,6 @@ async function updateStatus(id) {
   alert("Status update ho gaya.");
   await loadEnquiries();
 }
-
 async function loadBusBookings() {
   const box = document.getElementById("busBookings");
   box.textContent = "Bookings load ho rahi hain...";
@@ -841,25 +840,61 @@ async function loadBusBookings() {
       return;
     }
 
-    box.innerHTML = data.map(item => {
-      const mobile = String(item.whatsapp_number || item.mobile_number || "")
-        .replace(/\D/g, "");
-      const number = mobile.length === 10 ? "91" + mobile : mobile;
+    box.innerHTML = `
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Passenger</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Travel Date</th>
+            <th>Bus Type</th>
+            <th>Passengers</th>
+            <th>Mobile</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map(item => {
+            const mobile = String(
+              item.whatsapp_number || item.mobile_number || ""
+            ).replace(/\D/g, "");
 
-      return `
-        <div class="card">
-          <h3>${escapeHtml(item.passenger_name || "Customer")}</h3>
-          <p><b>From:</b> ${escapeHtml(item.from_location || "-")}</p>
-          <p><b>To:</b> ${escapeHtml(item.to_location || "-")}</p>
-          <p><b>Date:</b> ${escapeHtml(item.travel_date || "-")}</p>
-          <p><b>Bus:</b> ${escapeHtml(item.bus_type || "-")}</p>
-          <p><b>Passengers:</b> ${escapeHtml(item.passengers ?? "-")}</p>
-          <p><b>Mobile:</b> ${escapeHtml(item.mobile_number || "-")}</p>
-          <p><b>Status:</b> ${escapeHtml(item.status || "New")}</p>
-          ${mobile ? `<a class="whatsapp" target="_blank" rel="noopener" href="https://wa.me/${number}">WhatsApp</a>` : ""}
-        </div>
-      `;
-    }).join("");
+            const number = mobile.length === 10
+              ? "91" + mobile
+              : mobile;
+
+            return `
+              <tr>
+                <td>${escapeHtml(item.passenger_name || "Customer")}</td>
+                <td>${escapeHtml(item.from_location || "-")}</td>
+                <td>${escapeHtml(item.to_location || "-")}</td>
+                <td>${escapeHtml(item.travel_date || "-")}</td>
+                <td>${escapeHtml(item.bus_type || "-")}</td>
+                <td>${escapeHtml(item.passengers ?? "-")}</td>
+                <td>${escapeHtml(item.mobile_number || "-")}</td>
+                <td>${escapeHtml(item.status || "New")}</td>
+                <td>
+                  <div class="table-actions">
+                    ${
+                      mobile
+                        ? `<a class="whatsapp"
+                             target="_blank"
+                             rel="noopener"
+                             href="https://wa.me/${number}">
+                             WhatsApp
+                           </a>`
+                        : "-"
+                    }
+                  </div>
+                </td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    `;
   } catch (error) {
     box.textContent = "Bookings load nahi hui: " + error.message;
   }
