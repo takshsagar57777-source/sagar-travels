@@ -383,6 +383,73 @@ body {
     font-size: 13px !important;
   }
 }
+  /* Bus Hire table mobile fix */
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+}
+
+#enquiries .admin-table {
+  width: 1200px;
+  min-width: 1200px;
+  border-collapse: collapse;
+  table-layout: auto;
+  background: #fff;
+}
+
+#enquiries .admin-table th,
+#enquiries .admin-table td {
+  padding: 12px;
+  border: 1px solid #dbe4f0;
+  text-align: left;
+  vertical-align: middle;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+#enquiries .admin-table th {
+  background: #eaf2ff;
+  color: #17345c;
+  font-weight: 700;
+}
+
+#enquiries .admin-table td select {
+  min-width: 110px;
+  max-width: 130px;
+}
+
+#enquiries .table-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 105px;
+}
+
+#enquiries .table-actions a,
+#enquiries .table-actions button {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 100px;
+  padding: 10px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  #hireSection {
+    min-width: 0;
+  }
+
+  #enquiries .admin-table {
+    width: 1200px;
+    min-width: 1200px;
+  }
+}
 </style>
 </head>
 
