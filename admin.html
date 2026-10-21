@@ -450,6 +450,60 @@ body {
     min-width: 1200px;
   }
 }
+  /* Online Bus Bookings table fix */
+#busBookings {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#busBookings .admin-table {
+  width: 1200px;
+  min-width: 1200px;
+  border-collapse: collapse;
+  table-layout: auto;
+  background: #fff;
+}
+
+#busBookings .admin-table th,
+#busBookings .admin-table td {
+  padding: 12px;
+  border: 1px solid #dbe4f0;
+  text-align: left;
+  vertical-align: middle;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+#busBookings .admin-table th {
+  background: #eaf2ff;
+  color: #17345c;
+  font-weight: 700;
+}
+
+#busBookings .table-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 110px;
+}
+
+#busBookings .table-actions a {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 100px;
+  padding: 10px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#bookingSection {
+  min-width: 0;
+  max-width: 100%;
+}
 </style>
 </head>
 
