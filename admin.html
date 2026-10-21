@@ -482,22 +482,55 @@ body {
       <div id="billMessage" role="status"></div>
       <div id="billPreview"></div>
     </div>
-
-    <h2>Bus Hire Enquiries</h2>
+<div class="admin-tabs">
+  <button type="button" class="admin-tab active" onclick="showAdminSection('hireSection', this)">Bus Hire Enquiries</button>
+  <button type="button" class="admin-tab" onclick="showAdminSection('bookingSection', this)">Online Bus Bookings</button>
+  <button type="button" class="admin-tab" onclick="showAdminSection('billsSection', this)">Saved Bills</button>
+</div>
+    <div id="hireSection" class="admin-section">
+  <h2>Bus Hire Enquiries</h2>
+  <div class="table-wrap">
     <div id="enquiries">Login ke baad enquiries yahan dikhenगी.</div>
+  </div>
+</div>
 
-    <hr>
-    <h2>Online Bus Bookings</h2>
+<div id="bookingSection" class="admin-section" style="display:none;">
+  <h2>Online Bus Bookings</h2>
+  <div class="table-wrap">
     <div id="busBookings">Login ke baad bookings yahan dikhenगी.</div>
+  </div>
+</div>
 
-    <h2>Saved Bills</h2>
+<div id="billsSection" class="admin-section" style="display:none;">
+  <h2>Saved Bills</h2>
+  <div class="table-wrap">
     <div id="savedBills">Login ke baad saved bills yahan dikhenge.</div>
+  </div>
+</div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+  function showAdminSection(sectionId, button) {
+  document.querySelectorAll(".admin-section").forEach(section => {
+    section.style.display = "none";
+  });
+
+  const selectedSection = document.getElementById(sectionId);
+  if (selectedSection) {
+    selectedSection.style.display = "block";
+  }
+
+  document.querySelectorAll(".admin-tab").forEach(tab => {
+    tab.classList.remove("active");
+  });
+
+  if (button) {
+    button.classList.add("active");
+  }
+}
 const SUPABASE_URL = "https://lyyrajvxhumbqplqelei.supabase.co";
 const SUPABASE_KEY = "sb_publishable_38vwqEeCbiQ9D8fLH2n4gA_T7Qy7L_b";
 
@@ -638,43 +671,65 @@ function displayEnquiries(items) {
   const box = document.getElementById("enquiries");
 
   if (!items.length) {
-    box.textContent = "Abhi koi enquiry nahi hai.";
+    box.innerHTML = "Abhi koi enquiry nahi hai.";
     return;
   }
 
-  box.innerHTML = items.map(item => {
-    const status = item.status || "new";
-    const phone = String(item.phone || "").replace(/\D/g, "");
-    const whatsapp = phone.length === 10 ? "91" + phone : phone;
+  box.innerHTML = `
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Pickup</th>
+          <th>Destination</th>
+          <th>Travel Date</th>
+          <th>Bus Type</th>
+          <th>Purpose</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${items.map(item => {
+          const status = item.status || "new";
+          const phone = String(item.phone || "").replace(/\D/g, "");
+          const whatsapp = phone.length === 10 ? "91" + phone : phone;
+          const id = String(item.id);
 
-    return `
-      <div class="card">
-        <h3>${escapeHtml(item.name || "Customer")}</h3>
-        <p><b>Phone:</b> ${escapeHtml(item.phone || "-")}</p>
-        <p><b>Route:</b> ${escapeHtml(item.pickup || "-")} → ${escapeHtml(item.destination || "-")}</p>
-        <p><b>Travel Date:</b> ${escapeHtml(item.hire_date || "-")}</p>
-        <p><b>Bus Type:</b> ${escapeHtml(item.bus_type || "-")}</p>
-        <p><b>Purpose:</b> ${escapeHtml(item.purpose || "-")}</p>
-
-        <label>Status</label>
-        <select id="status-${escapeHtml(item.id)}">
-          ${["new", "contacted", "confirmed", "cancelled"].map(s =>
-            `<option value="${s}" ${status === s ? "selected" : ""}>${s}</option>`
-          ).join("")}
-        </select>
-
-        <div class="actions">
-          <a class="call" href="tel:${escapeHtml(item.phone || "")}">Call</a>
-          <a class="whatsapp" target="_blank" rel="noopener"
-             href="https://wa.me/${whatsapp}">WhatsApp</a>
-          <button class="save" type="button"
-             onclick="updateStatus('${String(item.id).replace(/'/g, "\\'")}')">
-             Save Status
-          </button>
-        </div>
-      </div>
-    `;
-  }).join("");
+          return `
+            <tr>
+              <td>${escapeHtml(item.name || "Customer")}</td>
+              <td>${escapeHtml(item.phone || "-")}</td>
+              <td>${escapeHtml(item.pickup || "-")}</td>
+              <td>${escapeHtml(item.destination || "-")}</td>
+              <td>${escapeHtml(item.hire_date || "-")}</td>
+              <td>${escapeHtml(item.bus_type || "-")}</td>
+              <td>${escapeHtml(item.purpose || "-")}</td>
+              <td>
+                <select id="status-${escapeHtml(id)}">
+                  ${["new", "contacted", "confirmed", "cancelled"].map(s =>
+                    `<option value="${s}" ${status === s ? "selected" : ""}>${s}</option>`
+                  ).join("")}
+                </select>
+              </td>
+              <td>
+                <div class="table-actions">
+                  <a class="call" href="tel:${escapeHtml(item.phone || "")}">Call</a>
+                  <a class="whatsapp" target="_blank" rel="noopener"
+                     href="https://wa.me/${whatsapp}">WhatsApp</a>
+                  <button class="save" type="button"
+                     onclick="updateStatus('${id.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')">
+                    Save Status
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("")}
+      </tbody>
+    </table>
+  `;
 }
 
 function filterEnquiries() {
@@ -685,7 +740,6 @@ function filterEnquiries() {
     String(item.phone || "").toLowerCase().includes(query)
   ));
 }
-
 async function updateStatus(id) {
   const status = document.getElementById("status-" + id).value;
 
