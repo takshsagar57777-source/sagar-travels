@@ -1135,17 +1135,36 @@ async function loadSavedBills() {
       return;
     }
 
-    box.innerHTML = data.map(bill => `
-      <div class="card">
-        <h3>${escapeHtml(bill.bill_number || "Travel Bill")}</h3>
-        <p><b>Customer:</b> ${escapeHtml(bill.customer_name || "-")}</p>
-        <p><b>Route:</b> ${escapeHtml(bill.from_location || "-")} → ${escapeHtml(bill.to_location || "-")}</p>
-        <p><b>Date:</b> ${escapeHtml(bill.travel_date || "-")}</p>
-        <p><b>Total:</b> ₹${Number(bill.total_amount || 0).toFixed(2)}
-           | <b>Advance:</b> ₹${Number(bill.advance_amount || 0).toFixed(2)}
-           | <b>Balance:</b> ₹${Number(bill.balance_amount || 0).toFixed(2)}</p>
-      </div>
-    `).join("");
+    box.innerHTML = `
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Bill Number</th>
+            <th>Customer</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Travel Date</th>
+            <th>Total</th>
+            <th>Advance</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map(bill => `
+            <tr>
+              <td>${escapeHtml(bill.bill_number || "Travel Bill")}</td>
+              <td>${escapeHtml(bill.customer_name || "-")}</td>
+              <td>${escapeHtml(bill.from_location || "-")}</td>
+              <td>${escapeHtml(bill.to_location || "-")}</td>
+              <td>${escapeHtml(bill.travel_date || "-")}</td>
+              <td>₹${Number(bill.total_amount || 0).toFixed(2)}</td>
+              <td>₹${Number(bill.advance_amount || 0).toFixed(2)}</td>
+              <td>₹${Number(bill.balance_amount || 0).toFixed(2)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
   } catch (error) {
     box.textContent = "Saved bills load nahi hue: " + error.message;
   }
