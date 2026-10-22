@@ -504,6 +504,100 @@ body {
   min-width: 0;
   max-width: 100%;
 }
+  /* FINAL FIX: all three admin tables */
+.table-wrap,
+#enquiries,
+#busBookings,
+#savedBills {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+#hireSection .table-wrap,
+#bookingSection .table-wrap,
+#billsSection .table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 12px 0 24px;
+  border: 1px solid #dbe4f0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+#enquiries .admin-table,
+#busBookings .admin-table,
+#savedBills .admin-table {
+  width: 1200px;
+  min-width: 1200px;
+  border-collapse: collapse;
+  table-layout: auto;
+  margin: 0;
+  background: #fff;
+}
+
+#enquiries .admin-table th,
+#enquiries .admin-table td,
+#busBookings .admin-table th,
+#busBookings .admin-table td,
+#savedBills .admin-table th,
+#savedBills .admin-table td {
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #dbe4f0;
+  text-align: left;
+  vertical-align: middle;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+#enquiries .admin-table th,
+#busBookings .admin-table th,
+#savedBills .admin-table th {
+  background: #eaf2ff;
+  color: #17345c;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#enquiries .table-actions,
+#busBookings .table-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 110px;
+}
+
+#enquiries .table-actions a,
+#enquiries .table-actions button,
+#busBookings .table-actions a {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 100px;
+  padding: 10px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#hireSection,
+#bookingSection,
+#billsSection {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  #hireSection .table-wrap,
+  #bookingSection .table-wrap,
+  #billsSection .table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
 </style>
 </head>
 
