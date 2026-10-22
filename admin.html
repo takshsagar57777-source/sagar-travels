@@ -1212,6 +1212,8 @@ function shareBillWhatsApp() {
   window.open("https://wa.me/" + number + "?text=" + encodeURIComponent(text), "_blank");
 }
 
+let savedBillsData = [];
+
 async function loadSavedBills() {
   const box = document.getElementById("savedBills");
   box.textContent = "Saved bills load ho rahe hain...";
@@ -1224,7 +1226,9 @@ async function loadSavedBills() {
 
     if (error) throw error;
 
-    if (!data || !data.length) {
+    savedBillsData = data || [];
+
+    if (!savedBillsData.length) {
       box.textContent = "Abhi koi saved bill nahi hai.";
       return;
     }
@@ -1237,14 +1241,15 @@ async function loadSavedBills() {
             <th>Customer</th>
             <th>From</th>
             <th>To</th>
-            <th>Travel Date</th>
+            <th>Date</th>
             <th>Total</th>
             <th>Advance</th>
             <th>Balance</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          ${data.map(bill => `
+          ${savedBillsData.map((bill, index) => `
             <tr>
               <td>${escapeHtml(bill.bill_number || "Travel Bill")}</td>
               <td>${escapeHtml(bill.customer_name || "-")}</td>
@@ -1254,6 +1259,12 @@ async function loadSavedBills() {
               <td>₹${Number(bill.total_amount || 0).toFixed(2)}</td>
               <td>₹${Number(bill.advance_amount || 0).toFixed(2)}</td>
               <td>₹${Number(bill.balance_amount || 0).toFixed(2)}</td>
+              <td>
+                <button class="save" type="button"
+                  onclick="printSavedBill(${index})">
+                  View / Print
+                </button>
+              </td>
             </tr>
           `).join("")}
         </tbody>
@@ -1263,7 +1274,67 @@ async function loadSavedBills() {
     box.textContent = "Saved bills load nahi hue: " + error.message;
   }
 }
+function printSavedBill(index) {
+  const bill = savedBillsData[index];
+  if (!bill) {
+    alert("Bill nahi mila. Page refresh karke dobara try karo.");
+    return;
+  }
 
+  const money = value => Number(value || 0).toFixed(2);
+  const safe = value => escapeHtml(value || "-");
+
+  const printWindow = window.open("", "_blank");
+  if (!printWindow) {
+    alert("Print window blocked hai. Browser mein pop-ups allow karo.");
+    return;
+  }
+
+  printWindow.document.open();
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>${safe(bill.bill_number || "Travel Bill")}</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          max-width: 750px;
+          margin: 30px auto;
+          padding: 20px;
+          color: #222;
+        }
+        h1, h2 { text-align: center; }
+        .line {
+          display: flex;
+          justify-content: space-between;
+          gap: 20px;
+          border-bottom: 1px solid #ddd;
+          padding: 12px 0;
+        }
+        .total { font-size: 20px; font-weight: bold; }
+        button { padding: 12px 20px; margin-top: 20px; }
+        @media print { button { display: none; } }
+      </style>
+    </head>
+    <body>
+      <h1>SAGAR TRAVELS</h1>
+      <h2>TRAVEL BILL</h2>
+      <div class="line"><b>Bill Number</b><span>${safe(bill.bill_number)}</span></div>
+      <div class="line"><b>Customer</b><span>${safe(bill.customer_name)}</span></div>
+      <div class="line"><b>From</b><span>${safe(bill.from_location)}</span></div>
+      <div class="line"><b>To</b><span>${safe(bill.to_location)}</span></div>
+      <div class="line"><b>Travel Date</b><span>${safe(bill.travel_date)}</span></div>
+      <div class="line total"><b>Total</b><span>₹${money(bill.total_amount)}</span></div>
+      <div class="line"><b>Advance</b><span>₹${money(bill.advance_amount)}</span></div>
+      <div class="line total"><b>Balance Due</b><span>₹${money(bill.balance_amount)}</span></div>
+      <button onclick="window.print()">Print / Save PDF</button>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
 updateBillCalculation();
 
 </script>
