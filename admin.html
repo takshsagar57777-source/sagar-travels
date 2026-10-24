@@ -1353,7 +1353,12 @@ body{padding:8px}
 <main class="content">
 <div class="topline">
 <div><div class="label">Invoice Number</div><div class="value">${safe(bill.bill_number || "-")}</div></div>
-<div><div class="label">Travel Date</div><div class="value">${safe(bill.travel_date || "-")}</div></div>
+<div class="label">Invoice Date</div>
+<div style="margin-top:12px">
+  <div class="label">Travel Date</div>
+  <div class="value">${safe(bill.travel_date || "-")}</div>
+</div>
+<div class="value">${new Date().toLocaleDateString("en-GB", {day:"2-digit", month:"2-digit", year:"numeric", timeZone:"Asia/Kolkata"})}</div>
 </div>
 
 <section class="section">
