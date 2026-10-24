@@ -1291,214 +1291,109 @@ function printSavedBill(index) {
   }
 
   printWindow.document.open();
-  printWindow.document.write(`
-    <!DOCTYPE html>
-<html>
+printWindow.document.write(`
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>${safe(bill.bill_number || "Invoice")}</title>
-
+<title>${safe(bill.bill_number || "Sagar Travels Invoice")}</title>
 <style>
 *{box-sizing:border-box}
-body{
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-margin:0;
-padding:25px;
-}
-.invoice{
-max-width:800px;
-margin:auto;
-background:#fff;
-border:1px solid #ddd;
-padding:35px;
-}
-.header{
-text-align:center;
-border-bottom:3px solid #1e3a5f;
-padding-bottom:18px;
-margin-bottom:25px;
-}
-.header h1{
-margin:0;
-font-size:30px;
-color:#1e3a5f;
-letter-spacing:2px;
-}
-.header p{
-margin:5px 0;
-color:#666;
-font-size:12px;
-}
-.title{
-display:inline-block;
-margin-top:12px;
-padding:7px 20px;
-border:1px solid #1e3a5f;
-font-weight:bold;
-letter-spacing:2px;
-}
-.section{
-margin-top:22px;
-}
-.section h3{
-background:#eef3f8;
-padding:8px 12px;
-font-size:13px;
-color:#1e3a5f;
-margin:0 0 10px;
-}
-.row{
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-border-bottom:1px solid #e5e5e5;
-gap:20px;
-}
-.row span:last-child{
-font-weight:600;
-text-align:right;
-}
-.total{
-font-size:16px;
-font-weight:bold;
-}
-.balance{
-font-size:18px;
-font-weight:bold;
-border-top:2px solid #1e3a5f;
-border-bottom:2px solid #1e3a5f;
-}
-.notes{
-margin-top:25px;
-padding:12px;
-border:1px solid #ddd;
-font-size:12px;
-}
-.notes p{margin:6px 0}
-.signature{
-margin-top:65px;
-text-align:right;
-}
-.signature div{
-display:inline-block;
-width:180px;
-border-top:1px solid #555;
-padding-top:8px;
-text-align:center;
-}
-button{
-margin-top:25px;
-padding:12px 20px;
-background:#1e3a5f;
-color:#fff;
-border:none;
-cursor:pointer;
-}
+body{margin:0;padding:24px;background:#edf1f6;color:#263448;font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+.invoice{max-width:800px;margin:auto;background:white;border:1px solid #d8dee8}
+.header{background:#142b49;color:white;text-align:center;padding:28px 20px 24px;border-bottom:5px solid #c6a45b}
+.logo{width:55px;height:55px;border:2px solid #d8bd79;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;color:#e5cb8a;font-size:22px;font-weight:bold}
+.header h1{margin:0;font-size:29px;letter-spacing:3px}
+.header p{margin:6px 0;color:#e2e8f0;font-size:12px;letter-spacing:1px}
+.title{display:inline-block;margin-top:16px;padding:7px 24px;border:1px solid #d8bd79;color:#f0d89c;font-weight:bold;letter-spacing:3px}
+.content{padding:28px 32px 32px}
+.topline{display:flex;justify-content:space-between;gap:15px;margin-bottom:22px;flex-wrap:wrap}
+.label{color:#718096;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.value{font-weight:bold;margin-top:4px}
+.section{margin-top:22px}
+.section h3{margin:0 0 8px;padding:9px 12px;background:#edf2f8;border-left:4px solid #c6a45b;color:#142b49;font-size:12px;letter-spacing:1px}
+.row{display:flex;justify-content:space-between;gap:18px;padding:10px 5px;border-bottom:1px solid #e5e9ef;font-size:13px}
+.row span:first-child{color:#58677a}
+.row span:last-child{text-align:right;font-weight:600;overflow-wrap:anywhere}
+.payment{margin-top:24px;padding:15px;border:1px solid #dce2eb;background:#fbfcfe}
+.payment .row{padding:11px 4px}
+.payment .fare span{font-weight:bold;color:#142b49}
+.payment .balance{margin-top:10px;padding:14px 12px;background:#142b49;color:white;font-size:16px;border:0}
+.payment .balance span{color:white;font-weight:bold}
+.notes{margin-top:24px;padding:14px 16px;border:1px solid #dce2eb;background:#fffdf7}
+.notes h3{margin:0 0 8px;color:#142b49;font-size:12px;letter-spacing:1px}
+.notes p{margin:6px 0;font-size:11px;color:#526174}
+.signature-area{display:flex;justify-content:flex-end;margin-top:55px}
+.signature{width:200px;height:40px;border-bottom:1px solid #687487}
+.footer{margin-top:28px;padding-top:13px;border-top:1px solid #dce2eb;text-align:center;color:#718096;font-size:10px}
+button{display:block;margin:22px auto 0;padding:12px 22px;background:#142b49;color:white;border:0;border-radius:4px;cursor:pointer}
+@page{size:A4;margin:12mm}
 @media print{
-body{padding:0;background:#fff}
+body{padding:0;background:white}
+.invoice{max-width:none;border:0}
 button{display:none}
+.header,.payment .balance{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media(max-width:560px){
+body{padding:8px}
+.header h1{font-size:23px}
+.content{padding:18px 14px}
 }
 </style>
 </head>
-
 <body>
-
 <div class="invoice">
-
-<div class="header">
+<header class="header">
+<div class="logo">ST</div>
 <h1>SAGAR TRAVELS</h1>
-<p>Bus Booking • Bus Hire • Tours</p>
+<p>BUS HIRE • BUS BOOKING • TOURS</p>
 <div class="title">INVOICE</div>
+</header>
+
+<main class="content">
+<div class="topline">
+<div><div class="label">Invoice Number</div><div class="value">${safe(bill.bill_number || "-")}</div></div>
+<div><div class="label">Travel Date</div><div class="value">${safe(bill.travel_date || "-")}</div></div>
 </div>
 
-<div class="section">
-<h3>BILL DETAILS</h3>
+<section class="section">
+<h3>01 &nbsp; CUSTOMER DETAILS</h3>
+<div class="row"><span>Customer Name</span><span>${safe(bill.customer_name || "-")}</span></div>
+</section>
 
-<div class="row">
-<span>Invoice Number</span>
-<span>${safe(bill.bill_number)}</span>
-</div>
+<section class="section">
+<h3>02 &nbsp; JOURNEY DETAILS</h3>
+<div class="row"><span>Pickup From</span><span>${safe(bill.from_location || "-")}</span></div>
+<div class="row"><span>Destination</span><span>${safe(bill.to_location || "-")}</span></div>
+<div class="row"><span>Pickup Time</span><span>${safe(bill.pickup_time || "-")}</span></div>
+<div class="row"><span>Trip Purpose</span><span>${safe(bill.purpose || bill.trip_purpose || "-")}</span></div>
+</section>
 
-<div class="row">
-<span>Customer Name</span>
-<span>${safe(bill.customer_name)}</span>
-</div>
+<section class="payment">
+<h3>03 &nbsp; PAYMENT SUMMARY</h3>
+<div class="row fare"><span>Agreed Bus Fare</span><span>₹${money(bill.total_amount)}</span></div>
+<div class="row"><span>Toll Tax / Parking</span><span>₹${money(bill.toll_amount)}</span></div>
+<div class="row"><span>Advance Received</span><span>₹${money(bill.advance_amount)}</span></div>
+<div class="row balance"><span>Balance Due</span><span>₹${money(bill.balance_amount)}</span></div>
+</section>
 
-<div class="row">
-<span>Invoice Date</span>
-<span>${safe(bill.travel_date)}</span>
-</div>
-</div>
-
-<div class="section">
-<h3>JOURNEY DETAILS</h3>
-
-<div class="row">
-<span>Pickup From</span>
-<span>${safe(bill.from_location)}</span>
-</div>
-
-<div class="row">
-<span>Destination</span>
-<span>${safe(bill.to_location)}</span>
-</div>
-
-<div class="row">
-<span>Pickup Time</span>
-<span>${safe(bill.pickup_time)}</span>
-</div>
-
-<div class="row">
-<span>Trip Purpose</span>
-<span>${safe(bill.purpose || bill.trip_purpose)}</span>
-</div>
-</div>
-
-<div class="section">
-<h3>PAYMENT DETAILS</h3>
-
-<div class="row total">
-<span>Agreed Bus Fare</span>
-<span>₹${money(bill.total_amount)}</span>
-</div>
-
-<div class="row">
-<span>Toll / Parking</span>
-<span>₹${money(bill.toll_amount)}</span>
-</div>
-
-<div class="row">
-<span>Advance Received</span>
-<span>₹${money(bill.advance_amount)}</span>
-</div>
-
-<div class="row balance">
-<span>Balance Due</span>
-<span>₹${money(bill.balance_amount)}</span>
-</div>
-</div>
-
-<div class="notes">
-<b>NOTES / TERMS</b>
-<p>• Pickup time and trip details should be verified before departure.</p>
-<p>• Toll, parking and other agreed charges are included as per booking.</p>
-<p>• Balance amount is payable as agreed.</p>
+<section class="notes">
+<h3>NOTES &amp; TERMS</h3>
+<p>• Please verify journey details and pickup time before departure.</p>
+<p>• Toll tax and parking charges are payable as agreed for the trip.</p>
+<p>• The remaining balance is payable as mutually agreed.</p>
 <p>• Thank you for choosing Sagar Travels.</p>
+</section>
+
+<div class="signature-area"><div class="signature"></div></div>
+<div class="footer">SAGAR TRAVELS &nbsp; | &nbsp; Thank you for your business</div>
+<button onclick="window.print()">Print / Save as PDF</button>
+</main>
 </div>
-
-<div class="signature">
-<div>Authorized Signature</div>
-</div>
-
-<button onclick="window.print()">Print / Save PDF</button>
-
-</div>
-
 </body>
 </html>
-');
-  printWindow.document.close();
+`);
+printWindow.document.close();
 }
 updateBillCalculation();
 
